@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'models/common/common_page.dart';
 import 'models/common/saveon_section.dart';
+import 'models/expense_categories/category_row_prefab.dart';
 
 class ExpensePage extends StatefulWidget {
   const ExpensePage({super.key, required this.title});
@@ -19,34 +20,6 @@ class _ExpensePageState extends State<ExpensePage> {
   Widget build(BuildContext context) {
     return CommonPage(
       commonPageContent: [
-        const Text("Expense Page"),
-        const Text("Expense Page"),
-        const Text("Expense Page"),
-        const Text("Expense Page"),
-        const Text("Expense Page"),
-        Container(color: Colors.amber, width: double.infinity, height: 100),
-        SaveOnSection(
-          SaveOnSectionContent: [
-            Expanded(
-              child: Container(
-                color: Colors.amber,
-                width: double.infinity,
-                height: 5,
-              ),
-            ),
-          ],
-        ),
-        SaveOnSection(
-          SaveOnSectionContent: [
-            Expanded(
-              child: Container(
-                color: Colors.amber,
-                width: double.infinity,
-                height: 5,
-              ),
-            ),
-          ],
-        ),
         SizedBox(width: double.infinity, height: 100),
         SaveOnSection(
           SaveOnSectionContent: [
@@ -69,6 +42,31 @@ class _ExpensePageState extends State<ExpensePage> {
             ),
           ],
         ),
+        SizedBox(height: 20,),
+        SaveOnSection(
+          SaveOnSectionContent: [
+            CategoryRowPrefab(categoryId: 1),
+          ],
+        ),
+        SizedBox(height: 20,),
+        SaveOnSection(
+          SaveOnSectionContent: [
+            CategoryRowPrefab(categoryId: 2),
+          ],
+        ),
+        SizedBox(height: 20,),
+        SaveOnSection(
+          SaveOnSectionContent: [
+            CategoryRowPrefab(categoryId: 3),
+          ],
+        ),
+        SizedBox(height: 20,),
+        SaveOnSection(
+          SaveOnSectionContent: [
+            CategoryRowPrefab(categoryId: 4),
+          ],
+        ),
+        SizedBox(height: 20,),
       ],
     );
   }

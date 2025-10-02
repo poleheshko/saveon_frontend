@@ -9,7 +9,7 @@ class SaveOnSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 46,
+      constraints: BoxConstraints(minHeight: 46),
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Color(0xFFFFFFFF), //background

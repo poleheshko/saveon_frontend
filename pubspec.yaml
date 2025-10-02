@@ -61,7 +61,7 @@ flutter:
   assets:
     - lib/assets/category_icons/category_events.svg
     - lib/assets/category_icons/category_groceries.svg
-    - lib/assets/category_icons/category_house.svg
+    - lib/assets/category_icons/category_home.svg
     - lib/assets/category_icons/category_notSelected.svg
     - lib/assets/category_icons/category_other.svg
     - lib/assets/category_icons/category_pets.svg
