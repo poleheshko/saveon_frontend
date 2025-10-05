@@ -72,6 +72,9 @@ flutter:
     - lib/assets/category_icons/category_subscriptions.svg
     - lib/assets/category_icons/category_transport.svg
     - lib/assets/other/hamburger_icon.svg
+    - lib/assets/date_icons/calendar_icon.svg
+    - lib/assets/date_icons/arrow_right_icon.svg
+    - lib/assets/date_icons/arrow_down_icon.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

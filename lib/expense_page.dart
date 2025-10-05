@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'data/category_info.dart';
 import 'models/common/common_page.dart';
 import 'models/common/saveon_section.dart';
+import 'models/date/choose_date_class.dart';
 import 'models/expense_categories/category_row_prefab.dart';
 import 'models/expense_categories/choose_category_class.dart';
 
@@ -25,6 +26,10 @@ class _ExpensePageState extends State<ExpensePage> {
         SizedBox(width: double.infinity, height: 100),
 
         ChooseCategoryClass(),
+
+        SizedBox(width: double.infinity, height: 20),
+
+        ChooseDateClass()
       ],
     );
   }

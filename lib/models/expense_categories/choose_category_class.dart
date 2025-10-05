@@ -44,7 +44,14 @@ class _ChooseCategoryClassState extends State<ChooseCategoryClass> {
                         "lib/assets/category_icons/category_notSelected.svg",
                       ),
                       SizedBox(width: 10),
-                      const Text("Category"),
+                      const Text(
+                        "choose category",
+                        style: TextStyle(
+                          color: Color(0xFF959595),
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
                     ],
                   )
                   : Row(
@@ -77,7 +84,8 @@ class _ChooseCategoryClassState extends State<ChooseCategoryClass> {
           for (final category in ListExpenseCategories) ...[
             //pojedynczy przycisk categorii
             GestureDetector(
-              behavior: HitTestBehavior.opaque, // wykrywa kliknięcie też na pustych miejscach
+              behavior: HitTestBehavior.opaque,
+              // wykrywa kliknięcie też na pustych miejscach
               onTap: () {
                 setState(() {
                   showCategories = !showCategories;
