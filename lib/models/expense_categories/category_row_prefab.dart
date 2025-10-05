@@ -11,7 +11,7 @@ class CategoryRowPrefab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final category = expenseCategories.firstWhere(
+    final category = ListExpenseCategories.firstWhere(
           (c) => c.categoryId == categoryId,
     );
 

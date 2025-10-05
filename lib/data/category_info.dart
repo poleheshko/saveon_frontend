@@ -16,7 +16,7 @@ class Category {
   });
 }
 
-List<Category> expenseCategories =[
+List<Category> ListExpenseCategories =[
   Category(
     categoryId: 1,
     categoryName: "Groceries",
