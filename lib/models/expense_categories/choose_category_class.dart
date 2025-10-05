@@ -25,50 +25,59 @@ class _ChooseCategoryClassState extends State<ChooseCategoryClass> {
   Widget build(BuildContext context) {
     return SaveOnSection(
       SaveOnSectionContent: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            selectedCategory == null
-                ? Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      "lib/assets/category_icons/category_notSelected.svg",
-                    ),
-                    SizedBox(width: 10),
-                    const Text("Category"),
-                  ],
-                )
-                : Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(selectedCategory!.categoryIconPath),
-                    SizedBox(width: 10),
-                    CategoryLabelPrefab(
-                      categoryName: selectedCategory!.categoryName,
-                      categoryLabelColor: selectedCategory!.labelColor,
-                      categoryTextColor: selectedCategory!.textColor,
-                    ),
-                  ],
-                ),
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              showCategories = !showCategories;
+            });
+          },
+          behavior: HitTestBehavior.opaque,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              selectedCategory == null
+                  ? Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        "lib/assets/category_icons/category_notSelected.svg",
+                      ),
+                      SizedBox(width: 10),
+                      const Text("Category"),
+                    ],
+                  )
+                  : Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(selectedCategory!.categoryIconPath),
+                      SizedBox(width: 10),
+                      CategoryLabelPrefab(
+                        categoryName: selectedCategory!.categoryName,
+                        categoryLabelColor: selectedCategory!.labelColor,
+                        categoryTextColor: selectedCategory!.textColor,
+                      ),
+                    ],
+                  ),
 
-            //hamburger icon button
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  showCategories = !showCategories;
-                });
-              },
-              child: SvgPicture.asset("lib/assets/other/hamburger_icon.svg"),
-            ),
-          ],
+              //hamburger icon button
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    showCategories = !showCategories;
+                  });
+                },
+                child: SvgPicture.asset("lib/assets/other/hamburger_icon.svg"),
+              ),
+            ],
+          ),
         ),
 
         if (showCategories) ...[
           for (final category in ListExpenseCategories) ...[
             //pojedynczy przycisk categorii
             GestureDetector(
+              behavior: HitTestBehavior.opaque, // wykrywa kliknięcie też na pustych miejscach
               onTap: () {
                 setState(() {
                   showCategories = !showCategories;
@@ -78,7 +87,7 @@ class _ChooseCategoryClassState extends State<ChooseCategoryClass> {
               child: Column(
                 children: [
                   SizedBox(height: 10),
-                  Container(color: Color(0xFFC0C0C0), height: 0.2,),
+                  Container(color: Color(0xFFC0C0C0), height: 0.2),
                   SizedBox(height: 10),
                   CategoryRowPrefab(categoryId: category.categoryId),
                 ],

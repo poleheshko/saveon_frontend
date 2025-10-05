@@ -15,20 +15,23 @@ class CategoryRowPrefab extends StatelessWidget {
           (c) => c.categoryId == categoryId,
     );
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SvgPicture.asset(
-          category.categoryIconPath,
-        ),
-        SizedBox(width: 10),
-        CategoryLabelPrefab(
-          categoryName: category.categoryName,
-          categoryLabelColor: category.labelColor,
-          categoryTextColor: category.textColor,
-        ),
-      ],
+    return Container(
+      width: double.infinity,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            category.categoryIconPath,
+          ),
+          SizedBox(width: 10),
+          CategoryLabelPrefab(
+            categoryName: category.categoryName,
+            categoryLabelColor: category.labelColor,
+            categoryTextColor: category.textColor,
+          ),
+        ],
+      ),
     );
   }
 }
