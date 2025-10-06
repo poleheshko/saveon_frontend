@@ -29,7 +29,9 @@ class _ExpensePageState extends State<ExpensePage> {
 
         SizedBox(width: double.infinity, height: 20),
 
-        ChooseDateClass()
+        ChooseDateClass(),
+
+        SizedBox(width: double.infinity, height: 100),
       ],
     );
   }

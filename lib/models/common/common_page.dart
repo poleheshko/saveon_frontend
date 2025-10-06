@@ -12,11 +12,13 @@ class CommonPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("SaveOn!"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 17),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: commonPageContent,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 17),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: commonPageContent,
+          ),
         ),
       ),
     );
