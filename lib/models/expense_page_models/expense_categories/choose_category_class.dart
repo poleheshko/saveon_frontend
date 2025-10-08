@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:saveon_frontend/models/expense_categories/category_label_prefab.dart';
 
-import '../../data/category_info.dart';
-import '../common/saveon_section.dart';
+import '../../../data/category_info.dart';
+import '../../common/saveon_section.dart';
+import 'category_label_prefab.dart';
 import 'category_row_prefab.dart';
 
 class ChooseCategoryClass extends StatefulWidget {

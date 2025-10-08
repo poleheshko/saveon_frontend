@@ -1,13 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
-import 'data/category_info.dart';
 import 'models/common/common_page.dart';
-import 'models/common/saveon_section.dart';
-import 'models/date/choose_date_class.dart';
-import 'models/expense_categories/category_row_prefab.dart';
-import 'models/expense_categories/choose_category_class.dart';
+import 'models/expense_page_models/amount_input.dart';
+import 'models/expense_page_models/date/choose_date_class.dart';
+import 'models/expense_page_models/expense_categories/choose_category_class.dart';
 
 class ExpensePage extends StatefulWidget {
   const ExpensePage({super.key, required this.title});
@@ -32,6 +29,11 @@ class _ExpensePageState extends State<ExpensePage> {
         ChooseDateClass(),
 
         SizedBox(width: double.infinity, height: 100),
+
+        AmountInput(),
+
+        SizedBox(width: double.infinity, height: 100),
+
       ],
     );
   }

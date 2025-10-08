@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../data/category_info.dart';
+import '../../../data/category_info.dart';
 import 'category_label_prefab.dart';
 
 class CategoryRowPrefab extends StatelessWidget {
