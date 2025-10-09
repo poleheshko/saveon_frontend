@@ -7,7 +7,9 @@ import 'category_label_prefab.dart';
 import 'category_row_prefab.dart';
 
 class ChooseCategoryClass extends StatefulWidget {
-  const ChooseCategoryClass({super.key});
+  final Function(Category)? onCategorySelected; // ✅ callback, który pózniej przekaże dane do expense page
+
+  const ChooseCategoryClass({super.key, this.onCategorySelected});
 
   State<ChooseCategoryClass> createState() => _ChooseCategoryClassState();
 }
@@ -27,6 +29,8 @@ class _ChooseCategoryClassState extends State<ChooseCategoryClass> {
       SaveOnSectionContent: [
         GestureDetector(
           onTap: () {
+            FocusManager.instance.primaryFocus?.unfocus();
+
             setState(() {
               showCategories = !showCategories;
             });
@@ -91,6 +95,8 @@ class _ChooseCategoryClassState extends State<ChooseCategoryClass> {
                   showCategories = !showCategories;
                   selectedCategory = category;
                 });
+
+                widget.onCategorySelected?.call(category); // wywołuję callback z wybraną kategorią
               },
               child: Column(
                 children: [

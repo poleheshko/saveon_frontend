@@ -6,7 +6,9 @@ import 'package:intl/intl.dart';
 import 'package:saveon_frontend/models/common/saveon_section.dart';
 
 class ChooseDateClass extends StatefulWidget {
-  const ChooseDateClass({super.key});
+  final Function(DateTime)? onDateSelected; // ✅ callback, który pózniej przekaże dane do expense page)
+
+  const ChooseDateClass({super.key, this.onDateSelected});
 
   State<ChooseDateClass> createState() => _ChooseDateClassState();
 }
@@ -33,6 +35,8 @@ class _ChooseDateClassState extends State<ChooseDateClass> {
       SaveOnSectionContent: [
         GestureDetector(
           onTap: () {
+            FocusManager.instance.primaryFocus?.unfocus();
+
             setState(() {
               showCalendar = !showCalendar;
             });
@@ -104,6 +108,8 @@ class _ChooseDateClassState extends State<ChooseDateClass> {
                         selectedDate = dates.first ?? DateTime.now();
                         showCalendar = !showCalendar;
                       });
+
+                      widget.onDateSelected?.call(selectedDate); // wywołuję callback z wybraną datą
                     },
                   )
                 ),

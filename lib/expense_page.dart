@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'data/category_info.dart';
 import 'models/common/common_page.dart';
 import 'models/expense_page_models/amount_input.dart';
 import 'models/expense_page_models/date/choose_date_class.dart';
@@ -16,25 +17,47 @@ class ExpensePage extends StatefulWidget {
 }
 
 class _ExpensePageState extends State<ExpensePage> {
+  Category? selectedCategory;
+  DateTime selectedDate = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
-    return CommonPage(
-      commonPageContent: [
-        SizedBox(width: double.infinity, height: 100),
+    return GestureDetector(
+      onTap: () {
+        // Zdejmij focus z dowolnego aktywnego TextFielda
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      behavior: HitTestBehavior.translucent,
+      child: CommonPage(
+        commonPageContent: [
+          const AmountInput(),
+          const SizedBox(width: double.infinity, height: 20),
 
-        ChooseCategoryClass(),
+          ChooseCategoryClass(
+            onCategorySelected: (category) {
+              setState(() {
+                selectedCategory = category;
+              });
+            },
+          ),
+          const SizedBox(width: double.infinity, height: 20),
 
-        SizedBox(width: double.infinity, height: 20),
+          ChooseDateClass(
+            onDateSelected: (date) {
+              setState(() {
+                selectedDate = date;
+              });
+            },
+          ),
+          const SizedBox(width: double.infinity, height: 100),
 
-        ChooseDateClass(),
+          // test
+          ElevatedButton(onPressed: () {
+            print('Wybrana kategoria: ${selectedCategory?.categoryName}');
+            print('Wybrana data: ${selectedDate.toLocal()}');}, child: Text('Save'))
 
-        SizedBox(width: double.infinity, height: 100),
-
-        AmountInput(),
-
-        SizedBox(width: double.infinity, height: 100),
-
-      ],
+        ],
+      ),
     );
   }
 }
