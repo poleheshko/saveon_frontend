@@ -75,6 +75,7 @@ flutter:
     - lib/assets/category_icons/category_subscriptions.svg
     - lib/assets/category_icons/category_transport.svg
     - lib/assets/other/hamburger_icon.svg
+    - lib/assets/other/camera_icon.svg
     - lib/assets/date_icons/calendar_icon.svg
     - lib/assets/date_icons/arrow_right_icon.svg
     - lib/assets/date_icons/arrow_down_icon.svg

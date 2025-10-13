@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:saveon_frontend/models/common/saveon_button.dart';
 
 import 'data/category_info.dart';
 import 'models/common/common_page.dart';
@@ -19,6 +20,7 @@ class ExpensePage extends StatefulWidget {
 class _ExpensePageState extends State<ExpensePage> {
   Category? selectedCategory;
   DateTime selectedDate = DateTime.now();
+  double? enteredAmount;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,20 @@ class _ExpensePageState extends State<ExpensePage> {
       behavior: HitTestBehavior.translucent,
       child: CommonPage(
         commonPageContent: [
-          const AmountInput(),
+          AmountInput(
+            onAmountChanged: (amount) {
+              setState(() {
+                enteredAmount = amount;
+              });
+            },
+          ),
+          const SizedBox(width: double.infinity, height: 20),
+
+          SaveOnButton(
+            buttonText: 'Receipt scan AI',
+            onPressed: () {},
+            buttonIconPath: 'lib/assets/other/camera_icon.svg',
+          ),
           const SizedBox(width: double.infinity, height: 20),
 
           ChooseCategoryClass(
@@ -49,13 +64,17 @@ class _ExpensePageState extends State<ExpensePage> {
               });
             },
           ),
-          const SizedBox(width: double.infinity, height: 100),
+          const SizedBox(width: double.infinity, height: 20),
 
           // test
-          ElevatedButton(onPressed: () {
-            print('Wybrana kategoria: ${selectedCategory?.categoryName}');
-            print('Wybrana data: ${selectedDate.toLocal()}');}, child: Text('Save'))
-
+          SaveOnButton(
+            onPressed: () {
+              print('Wybrana kategoria: ${selectedCategory?.categoryName}');
+              print('Wybrana data: ${selectedDate.toLocal()}');
+              print('Wprowadzona kwota: $enteredAmount');
+            },
+            buttonText: 'Save',
+          ),
         ],
       ),
     );

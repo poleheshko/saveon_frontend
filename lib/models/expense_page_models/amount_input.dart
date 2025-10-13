@@ -4,7 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class AmountInput extends StatefulWidget {
-  const AmountInput({super.key});
+  final Function(double)? onAmountChanged; // 👈 callback do rodzica
+
+  const AmountInput({super.key, this.onAmountChanged});
 
   @override
   State<AmountInput> createState() => _AmountInputState();
@@ -63,56 +65,78 @@ class _AmountInputState extends State<AmountInput> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          IntrinsicWidth(
-            child: TextField(
-              controller: _controller,
-              focusNode: _focusNode,
-              keyboardType:
-              const TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-              ],
-              onChanged: (value) {
-                // zapamiętaj pozycję kursora
-                final oldPos = _controller.selection.baseOffset;
-                final newText = _formatInput(value);
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IntrinsicWidth(
+                child: TextField(
+                  controller: _controller,
+                  focusNode: _focusNode,
+                  keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                  ],
+                  onChanged: (value) {
+                    // zapamiętaj pozycję kursora
+                    final oldPos = _controller.selection.baseOffset;
+                    final newText = _formatInput(value);
 
-                // tylko jeśli tekst faktycznie się zmienił
-                if (newText != value) {
-                  _controller.value = TextEditingValue(
-                    text: newText,
-                    selection: TextSelection.collapsed(
-                      offset: (oldPos + (newText.length - value.length))
-                          .clamp(0, newText.length),
-                    ),
-                  );
-                }
-              },
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 50,
-                fontWeight: FontWeight.w400,
-                color: Color(0xFF000000),
+                    // tylko jeśli tekst faktycznie się zmienił
+                    if (newText != value) {
+                      _controller.value = TextEditingValue(
+                        text: newText,
+                        selection: TextSelection.collapsed(
+                          offset: (oldPos + (newText.length - value.length))
+                              .clamp(0, newText.length),
+                        ),
+                      );
+                    }
+
+                    // ✅ przekazanie wartości do rodzica
+                    final cleanedValue =
+                    newText.replaceAll(',', '').replaceAll(' ', '');
+                    final double? parsed = double.tryParse(cleanedValue);
+                    if (parsed != null && widget.onAmountChanged != null) {
+                      widget.onAmountChanged!(parsed);
+                    }
+                  },
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 50,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF000000),
+                  ),
+                  showCursor: _focusNode.hasFocus,
+                  autofocus: true,
+                  cursorColor: const Color(0xFF659BFF),
+                  cursorWidth: 2,
+                  cursorHeight: 50,
+                  decoration: const InputDecoration(border: InputBorder.none),
+                ),
               ),
-              showCursor: _focusNode.hasFocus,
-              autofocus: true,
-              cursorColor: const Color(0xFF659BFF),
-              cursorWidth: 2,
-              decoration: const InputDecoration(border: InputBorder.none),
-            ),
+              const SizedBox(width: 10),
+              const Text(
+                'zł',
+                style: TextStyle(
+                  fontSize: 50,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF000000),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: 10),
-          const Text(
-            'zł',
-            style: TextStyle(
-              fontSize: 50,
-              fontWeight: FontWeight.w400,
-              color: Color(0xFF000000),
-            ),
-          ),
+
+          Text('Amount', style: TextStyle(
+            color: Color(0xFF959595),
+            fontSize: 16,
+            fontWeight: FontWeight.normal,
+          ),)
         ],
       ),
     );
