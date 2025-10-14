@@ -4,6 +4,7 @@ import 'package:saveon_frontend/models/common/saveon_button.dart';
 
 import 'data/category_info.dart';
 import 'models/common/common_page.dart';
+import 'models/expense_page_models/album_selector/album_selector_class.dart';
 import 'models/expense_page_models/amount_input.dart';
 import 'models/expense_page_models/date/choose_date_class.dart';
 import 'models/expense_page_models/expense_categories/choose_category_class.dart';
@@ -64,6 +65,10 @@ class _ExpensePageState extends State<ExpensePage> {
               });
             },
           ),
+          const SizedBox(width: double.infinity, height: 20),
+
+          AlbumSelectorClass(),
+
           const SizedBox(width: double.infinity, height: 20),
 
           // test

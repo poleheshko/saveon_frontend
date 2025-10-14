@@ -79,6 +79,11 @@ flutter:
     - lib/assets/date_icons/calendar_icon.svg
     - lib/assets/date_icons/arrow_right_icon.svg
     - lib/assets/date_icons/arrow_down_icon.svg
+    - lib/assets/album_icons/album_purple.svg
+    - lib/assets/album_icons/album_orange.svg
+    - lib/assets/album_icons/album_black.svg
+    - lib/assets/album_icons/item_unselected.svg
+    - lib/assets/album_icons/item_selected.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
