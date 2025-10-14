@@ -1,22 +1,40 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
-class AlbumRow extends StatefulWidget {
-  const AlbumRow({super.key});
+import '../../../data/album_model.dart';
 
-  @override
-  State<StatefulWidget> createState() => _AlbumRowState();
-}
+class AlbumRow extends StatelessWidget {
+  final int albumId;
 
-class _AlbumRowState extends State<AlbumRow> {
+  const AlbumRow({super.key, required this.albumId});
+
   @override
   Widget build(BuildContext context) {
+    final albumType = ListAlbums.firstWhere((a) => a.albumId == albumId);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(height: 50, width: 50, color: Colors.amber)
-      ]
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SvgPicture.asset(albumType.albumIconPath, height: 30, width: 30),
+            const SizedBox(width: 5),
+            Text(
+              albumType.albumName,
+              style: const TextStyle(
+                color: Color(0xFF000000),
+                fontSize: 16,
+                fontWeight: FontWeight.normal,
+              ),
+            )
+          ],
+        ),
+        SvgPicture.asset("lib/assets/album_icons/item_selected.svg", height: 20, width: 20)
+      ],
     );
   }
 }

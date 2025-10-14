@@ -16,7 +16,7 @@ class _AlbumSelectorClassState extends State<AlbumSelectorClass> {
   Widget build(BuildContext context) {
     return SaveOnSection(
       SaveOnSectionContent: [
-        AlbumRow()
+        AlbumRow(albumId: 1,)
       ],
     );
   }
