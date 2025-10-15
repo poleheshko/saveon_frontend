@@ -11,7 +11,7 @@ class AlbumRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final albumType = ListAlbums.firstWhere((a) => a.albumId == albumId);
+    final albumType = ListOfAlbums.firstWhere((a) => a.albumId == albumId);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

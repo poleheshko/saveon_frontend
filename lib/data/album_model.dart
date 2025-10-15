@@ -10,7 +10,7 @@ class AlbumType {
   });
 }
 
-List<AlbumType> ListAlbums =[
+List<AlbumType> ListOfAlbums =[
   AlbumType(
     albumId: 1,
     albumName: "Vacation Greece 2025",

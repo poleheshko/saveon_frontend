@@ -100,9 +100,9 @@ class _ChooseCategoryClassState extends State<ChooseCategoryClass> {
               },
               child: Column(
                 children: [
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Container(color: Color(0xFFC0C0C0), height: 0.2),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   CategoryRowPrefab(categoryId: category.categoryId),
                 ],
               ),
