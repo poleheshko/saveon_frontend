@@ -80,6 +80,8 @@ class _ExpensePageState extends State<ExpensePage> {
             },
             buttonText: 'Save',
           ),
+
+          const SizedBox(width: double.infinity, height: 20),
         ],
       ),
     );

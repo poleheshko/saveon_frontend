@@ -90,6 +90,7 @@ class _ChooseDateClassState extends State<ChooseDateClass> {
               if (showCalendar) ...[
                 SizedBox(height: 25),
                 Container(
+                  height: 250,
                   child: CalendarDatePicker2(
                     config: CalendarDatePicker2Config(
                       calendarType: CalendarDatePicker2Type.single, // 🟢 pojedynczy wybór
