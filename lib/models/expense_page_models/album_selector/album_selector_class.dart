@@ -6,7 +6,9 @@ import 'package:saveon_frontend/models/common/saveon_section.dart';
 import '../../../data/album_model.dart';
 
 class AlbumSelectorClass extends StatefulWidget {
-  const AlbumSelectorClass({super.key});
+  final Function(Set<int>)? onAlbumSelected; // ✅ callback, który pózniej przekaże dane do expense page
+
+  const AlbumSelectorClass({super.key, this.onAlbumSelected});
 
   @override
   State<AlbumSelectorClass> createState() => _AlbumSelectorClassState();
@@ -74,6 +76,9 @@ class _AlbumSelectorClassState extends State<AlbumSelectorClass> {
                       else {
                         _selectedIndices.add(index);
                       }
+
+                      // wywołanie callbacku
+                      widget.onAlbumSelected?.call(_selectedIndices);
                     });
                   },
                 ),

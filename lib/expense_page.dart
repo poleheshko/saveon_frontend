@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:saveon_frontend/models/common/saveon_button.dart';
 
+import 'data/album_model.dart';
 import 'data/category_info.dart';
 import 'models/common/common_page.dart';
 import 'models/expense_page_models/album_selector/album_selector_class.dart';
@@ -22,6 +23,7 @@ class _ExpensePageState extends State<ExpensePage> {
   Category? selectedCategory;
   DateTime selectedDate = DateTime.now();
   double? enteredAmount;
+  Set<int>? selectedAlbumes;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +69,13 @@ class _ExpensePageState extends State<ExpensePage> {
           ),
           const SizedBox(width: double.infinity, height: 20),
 
-          AlbumSelectorClass(),
+          AlbumSelectorClass(
+            onAlbumSelected: (selectedAlbums) {
+              setState(() {
+                selectedAlbumes = selectedAlbums;
+              });
+            }
+          ),
 
           const SizedBox(width: double.infinity, height: 20),
 
@@ -77,7 +85,7 @@ class _ExpensePageState extends State<ExpensePage> {
               print('Wybrana kategoria: ${selectedCategory?.categoryName}');
               print('Wybrana data: ${selectedDate.toLocal()}');
               print('Wprowadzona kwota: $enteredAmount');
-            },
+              print('Wybrane albumy: ${selectedAlbumes?.map((i) => ListOfAlbums[i].albumName).join(', ')}');            },
             buttonText: 'Save',
           ),
 
