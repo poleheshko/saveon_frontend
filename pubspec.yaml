@@ -31,6 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_svg: ^2.0.7
+  motion_tab_bar: ^2.0.4
   calendar_date_picker2: ^2.0.1
   intl: ^0.19.0
 
@@ -84,6 +85,20 @@ flutter:
     - lib/assets/album_icons/album_black.svg
     - lib/assets/album_icons/item_unselected.svg
     - lib/assets/album_icons/item_selected.svg
+    - lib/assets/album_icons/
+    - lib/assets/category_icons/
+    - lib/assets/date_icons/
+    - lib/assets/menu/10pxpiecie.svg
+    - lib/assets/menu/expensesActive.svg
+    - lib/assets/menu/expensesRegular.svg
+    - lib/assets/menu/friendsActive.svg
+    - lib/assets/menu/friendsRegular.svg
+    - lib/assets/menu/homeActive.svg
+    - lib/assets/menu/homeRegular.svg
+    - lib/assets/menu/investActive.svg
+    - lib/assets/menu/investRegular.svg
+    - lib/assets/menu/rankingActive.svg
+    - lib/assets/menu/rankingRegular.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
