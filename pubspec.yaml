@@ -34,6 +34,7 @@ dependencies:
   motion_tab_bar: ^2.0.4
   calendar_date_picker2: ^2.0.1
   intl: ^0.19.0
+  google_fonts: ^6.2.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -77,6 +78,7 @@ flutter:
     - lib/assets/category_icons/category_transport.svg
     - lib/assets/other/hamburger_icon.svg
     - lib/assets/other/camera_icon.svg
+    - lib/assets/other/arrow_next.svg
     - lib/assets/date_icons/calendar_icon.svg
     - lib/assets/date_icons/arrow_right_icon.svg
     - lib/assets/date_icons/arrow_down_icon.svg
