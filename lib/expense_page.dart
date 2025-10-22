@@ -11,9 +11,7 @@ import 'models/expense_page_models/date/choose_date_class.dart';
 import 'models/expense_page_models/expense_categories/choose_category_class.dart';
 
 class ExpensePage extends StatefulWidget {
-  const ExpensePage({super.key, required this.title});
-
-  final String title;
+  const ExpensePage({super.key});
 
   @override
   State<ExpensePage> createState() => _ExpensePageState();

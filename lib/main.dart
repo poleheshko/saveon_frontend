@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:saveon_frontend/widgets/bottom_navigation/main_navigation.dart';
 
 import 'expense_page.dart';
 
@@ -16,7 +17,7 @@ class SaveOn extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const ExpensePage(title: 'Flutter Demo Home Page'),
+      home: const MainNavigation(),
     );
   }
 }
