@@ -33,7 +33,7 @@ class AlbumRow extends StatelessWidget {
             )
           ],
         ),
-        SvgPicture.asset("lib/assets/album_icons/item_selected.svg", height: 20, width: 20)
+        SvgPicture.asset("lib/assets/other/arrow_next_20px.svg", height: 20, width: 20)
       ],
     );
   }

@@ -15,6 +15,7 @@ class _CurrentBalance extends State<CurrentBalance> {
   Widget build(BuildContext context) {
     return SaveOnSection(
       sectionTitle: "Current Balance",
+      textLabelButton: "See all",
       SaveOnSectionContent: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

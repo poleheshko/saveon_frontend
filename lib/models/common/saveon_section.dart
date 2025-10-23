@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:saveon_frontend/models/common/saveon_textbutton.dart';
 
 class SaveOnSection extends StatelessWidget {
   final String? sectionTitle;
+  final String? textLabelButton;
+  final VoidCallback? textButtonOnPressed;
   final List<Widget> SaveOnSectionContent;
 
   const SaveOnSection({
     required this.SaveOnSectionContent,
+    this.textLabelButton,
     this.sectionTitle,
+    this.textButtonOnPressed,
     super.key,
   });
 
@@ -15,13 +20,28 @@ class SaveOnSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (sectionTitle != null) ...[
-          Text(
-            sectionTitle!,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          const SizedBox(height: 10),
-        ],
+        sectionTitle != null && textLabelButton == null
+            ? Text(
+              sectionTitle!,
+              style: Theme.of(context).textTheme.titleMedium,
+            )
+            : sectionTitle != null && textLabelButton != null
+            ? Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  sectionTitle!,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                SaveOnTextButton(
+                  onPressed: textButtonOnPressed,
+                  buttonLabel: textLabelButton!,
+                )
+              ],
+            )
+            : SizedBox.shrink(),
+        const SizedBox(height: 10),
 
         Container(
           width: double.infinity,

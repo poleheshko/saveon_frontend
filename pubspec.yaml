@@ -79,6 +79,7 @@ flutter:
     - lib/assets/other/hamburger_icon.svg
     - lib/assets/other/camera_icon.svg
     - lib/assets/other/arrow_next.svg
+    - lib/assets/other/arrow_next_20px.svg
     - lib/assets/date_icons/calendar_icon.svg
     - lib/assets/date_icons/arrow_right_icon.svg
     - lib/assets/date_icons/arrow_down_icon.svg
