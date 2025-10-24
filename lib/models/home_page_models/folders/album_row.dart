@@ -25,15 +25,15 @@ class AlbumRow extends StatelessWidget {
             const SizedBox(width: 5),
             Text(
               albumType.albumName,
-              style: const TextStyle(
-                color: Color(0xFF000000),
-                fontSize: 16,
-                fontWeight: FontWeight.normal,
-              ),
-            )
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
           ],
         ),
-        SvgPicture.asset("lib/assets/other/arrow_next_20px.svg", height: 20, width: 20)
+        SvgPicture.asset(
+          "lib/assets/other/arrow_next_20px.svg",
+          height: 20,
+          width: 20,
+        ),
       ],
     );
   }

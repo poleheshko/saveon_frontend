@@ -6,7 +6,8 @@ import 'package:saveon_frontend/models/common/saveon_section.dart';
 import '../../../data/album_model.dart';
 
 class AlbumSelectorClass extends StatefulWidget {
-  final Function(Set<int>)? onAlbumSelected; // ✅ callback, który pózniej przekaże dane do expense page
+  final Function(Set<int>)?
+  onAlbumSelected; // ✅ callback, który pózniej przekaże dane do expense page
 
   const AlbumSelectorClass({super.key, this.onAlbumSelected});
 
@@ -15,6 +16,7 @@ class AlbumSelectorClass extends StatefulWidget {
 }
 
 class _AlbumSelectorClassState extends State<AlbumSelectorClass> {
+  final foldersCount = 3;
   final Set<int> _selectedIndices = {};
 
   @override
@@ -26,7 +28,7 @@ class _AlbumSelectorClassState extends State<AlbumSelectorClass> {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
 
-          itemCount: ListOfAlbums.length,
+          itemCount: foldersCount,
           itemBuilder: (context, index) {
             final bool isSelected = _selectedIndices.contains(index);
 
@@ -53,7 +55,10 @@ class _AlbumSelectorClassState extends State<AlbumSelectorClass> {
                     width: 30,
                     height: 30,
                   ),
-                  title: Text(ListOfAlbums[index].albumName),
+                  title: Text(
+                    ListOfAlbums[index].albumName,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
                   trailing:
                       isSelected
                           ? SvgPicture.asset(
@@ -83,7 +88,7 @@ class _AlbumSelectorClassState extends State<AlbumSelectorClass> {
                   },
                 ),
 
-                if (index != ListOfAlbums.length - 1) ...[
+                if (index != foldersCount - 1) ...[
                   const SizedBox(height: 10),
                   Container(color: Color(0xFFC0C0C0), height: 0.2),
                   const SizedBox(height: 10),
