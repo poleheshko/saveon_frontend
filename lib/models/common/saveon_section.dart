@@ -21,24 +21,34 @@ class SaveOnSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         sectionTitle != null && textLabelButton == null
-            ? Text(
-              sectionTitle!,
-              style: Theme.of(context).textTheme.titleMedium,
+            ? Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                children: [
+                  Text(
+                    sectionTitle!,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ],
+              ),
             )
             : sectionTitle != null && textLabelButton != null
-            ? Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  sectionTitle!,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                SaveOnTextButton(
-                  onPressed: textButtonOnPressed,
-                  buttonLabel: textLabelButton!,
-                )
-              ],
+            ? Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    sectionTitle!,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  SaveOnTextButton(
+                    onPressed: textButtonOnPressed,
+                    buttonLabel: textLabelButton!,
+                  )
+                ],
+              ),
             )
             : SizedBox.shrink(),
         const SizedBox(height: 10),
