@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:saveon_frontend/models/common/common_page.dart';
 import 'package:saveon_frontend/models/home_page_models/current_balance.dart';
+import 'package:saveon_frontend/models/home_page_models/payment_history_short.dart';
 
 import 'models/home_page_models/folders/folders_class.dart';
 
@@ -18,7 +19,9 @@ class _HomePage extends State<HomePage> {
     return CommonPage(commonPageContent: [
       CurrentBalance(),
       const SizedBox(height: 20),
-      FoldersClass()
+      FoldersClass(),
+      const SizedBox(height: 20),
+      PaymentHistoryShort(),
     ]
     );
   }
