@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:saveon_frontend/models/common/saveon_section.dart';
-import 'package:saveon_frontend/models/home_page_models/transaction_prefab.dart';
+import 'package:saveon_frontend/models/home_page_models/payment_history/transaction_prefab.dart';
 
 class PaymentHistoryShort extends StatefulWidget {
   const PaymentHistoryShort({super.key});

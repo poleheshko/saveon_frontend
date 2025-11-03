@@ -15,7 +15,9 @@ class _CurrentBalance extends State<CurrentBalance> {
     return SaveOnSection(
       sectionTitle: "Current Balance",
       SaveOnSectionContent: [
-        Row(     crossAxisAlignment: CrossAxisAlignment.center,
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
