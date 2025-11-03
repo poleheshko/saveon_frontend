@@ -11,6 +11,7 @@ class ChooseCategoryClass extends StatefulWidget {
 
   const ChooseCategoryClass({super.key, this.onCategorySelected});
 
+  @override
   State<ChooseCategoryClass> createState() => _ChooseCategoryClassState();
 }
 

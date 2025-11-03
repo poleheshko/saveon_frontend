@@ -15,7 +15,7 @@ class CategoryRowPrefab extends StatelessWidget {
           (c) => c.categoryId == categoryId,
     );
 
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,

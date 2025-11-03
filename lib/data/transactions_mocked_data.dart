@@ -1,6 +1,4 @@
-import 'dart:ui';
 
-import 'category_info.dart';
 
 class TransactionsMockedData {
   final int categoryId;

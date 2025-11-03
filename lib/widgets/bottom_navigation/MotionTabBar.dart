@@ -1,10 +1,9 @@
-library motiontabbar;
+library;
 
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'MotionTabBarController.dart';
 import 'MotionTabItem.dart';
-import 'helpers/HalfClipper.dart';
 import 'helpers/HalfPainter.dart';
 
 typedef MotionTabBuilder = Widget Function();
@@ -24,7 +23,7 @@ class MotionTabBar extends StatefulWidget {
   // badge
   final List<Widget?>? badges;
 
-  MotionTabBar({
+  MotionTabBar({super.key, 
     this.textStyle,
     this.tabIconColor = Colors.black,
     this.tabIconSize = 30,
@@ -123,7 +122,7 @@ class _MotionTabBarState extends State<MotionTabBar> with TickerProviderStateMix
 
     // init badge text
     int selectedIndex = labels.indexWhere((element) => element == widget.initialSelectedTab);
-    activeBadge = (widget.badges != null && widget.badges!.length > 0) ? widget.badges![selectedIndex] : null;
+    activeBadge = (widget.badges != null && widget.badges!.isNotEmpty) ? widget.badges![selectedIndex] : null;
 
     _animationController = AnimationController(
       duration: Duration(milliseconds: ANIM_DURATION),

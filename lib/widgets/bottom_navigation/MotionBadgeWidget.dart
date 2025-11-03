@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class MotionBadgeWidget extends StatelessWidget {
   const MotionBadgeWidget({
-    Key? key,
+    super.key,
     bool? isIndicator,
     this.text,
     Color? textColor,
@@ -10,14 +10,13 @@ class MotionBadgeWidget extends StatelessWidget {
     Color? color,
     bool? disabled,
     bool? show,
-  })  : this._isIndicator = isIndicator ?? false,
-        this._color = color ?? Colors.red,
-        this._textColor = textColor ?? Colors.white,
-        this._size = size ?? (isIndicator == true ? 5 : 18),
-        this._disabled = disabled ?? false,
-        this._show = show != null ? show : true,
-        assert(text != null ? text.length <= 3 : true),
-        super(key: key);
+  })  : _isIndicator = isIndicator ?? false,
+        _color = color ?? Colors.red,
+        _textColor = textColor ?? Colors.white,
+        _size = size ?? (isIndicator == true ? 5 : 18),
+        _disabled = disabled ?? false,
+        _show = show ?? true,
+        assert(text != null ? text.length <= 3 : true);
 
   final bool? _isIndicator;
   final String? text;
@@ -34,32 +33,32 @@ class MotionBadgeWidget extends StatelessWidget {
       alignment: Alignment.center,
       padding: EdgeInsets.all(3),
       margin: EdgeInsets.all(7),
-      decoration: new BoxDecoration(
+      decoration: BoxDecoration(
         color: _disabled == false ? _color : _color!.withOpacity(0.6),
         borderRadius: BorderRadius.circular(_size! / 2),
       ),
       constraints: BoxConstraints(
-        minWidth: _size!,
-        minHeight: _size!,
+        minWidth: _size,
+        minHeight: _size,
       ),
     )
         : _show == true && text != null && text != ''
         ? Container(
       alignment: Alignment.center,
       padding: EdgeInsets.all(3),
-      decoration: new BoxDecoration(
+      decoration: BoxDecoration(
         color: _disabled == false ? _color : _color!.withOpacity(0.6),
         borderRadius: BorderRadius.circular(_size! / 2),
       ),
       constraints: BoxConstraints(
-        minWidth: _size!,
-        minHeight: _size!,
+        minWidth: _size,
+        minHeight: _size,
       ),
       child: Text(
         '$text',
         style: TextStyle(
           color: _textColor,
-          fontSize: _size != null ? (_size! / 2) : 9,
+          fontSize: _size != null ? (_size / 2) : 9,
           fontWeight: FontWeight.w600,
           letterSpacing: 0.5,
         ),

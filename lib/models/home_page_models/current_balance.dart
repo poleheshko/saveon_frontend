@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:saveon_frontend/models/common/saveon_section.dart';
@@ -16,9 +15,7 @@ class _CurrentBalance extends State<CurrentBalance> {
     return SaveOnSection(
       sectionTitle: "Current Balance",
       SaveOnSectionContent: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        Row(     crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.start,

@@ -20,7 +20,7 @@ class MotionTabItem extends StatefulWidget {
   final double? tabIconSize;
   final Widget? badge;
 
-  MotionTabItem({
+  const MotionTabItem({super.key, 
     required this.title,
     required this.selected,
     this.iconData, // Optional: For older `IconData` usage
@@ -96,7 +96,7 @@ class _MotionTabItemState extends State<MotionTabItem> {
           ),
           InkWell(
             onTap: () => widget.callbackFunction(),
-            child: Container(
+            child: SizedBox(
               height: double.infinity,
               width: double.infinity,
               child: AnimatedAlign(
@@ -119,7 +119,7 @@ class _MotionTabItemState extends State<MotionTabItem> {
                           widget.iconData,
                           color: widget.selected
                               ? widget.tabIconColor
-                              : widget.tabIconColor?.withOpacity(0.6),
+                              : widget.tabIconColor.withOpacity(0.6),
                           size: widget.tabIconSize,
                         )
                       else

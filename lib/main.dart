@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:saveon_frontend/widgets/bottom_navigation/main_navigation.dart';
 
-import 'expense_page.dart';
 
 void main() {
   runApp(const SaveOn());
@@ -14,6 +13,7 @@ class SaveOn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         textTheme: GoogleFonts.latoTextTheme(

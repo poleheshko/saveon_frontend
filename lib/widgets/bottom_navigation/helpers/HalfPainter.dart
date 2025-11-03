@@ -1,4 +1,4 @@
-library motiontabbar;
+library;
 import 'package:flutter/material.dart';
 
 class HalfPainter extends CustomPainter {

@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 
 class MotionTabBarController extends TabController {
   MotionTabBarController({
-    int initialIndex = 0,
-    Duration? animationDuration,
-    required int length,
-    required TickerProvider vsync,
-  }) : super(initialIndex: initialIndex, animationDuration: animationDuration, length: length, vsync: vsync);
+    super.initialIndex,
+    super.animationDuration,
+    required super.length,
+    required super.vsync,
+  });
 
   // programmatic tab change
+  @override
   set index(int index) {
     super.index = index;
     _changeIndex!(index);

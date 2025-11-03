@@ -15,8 +15,8 @@ class SaveOnTextButton extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       style: ButtonStyle(
-        padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.zero),
-        minimumSize: MaterialStateProperty.all(Size.zero),
+        padding: WidgetStateProperty.all<EdgeInsets>(EdgeInsets.zero),
+        minimumSize: WidgetStateProperty.all(Size.zero),
         tapTargetSize: MaterialTapTargetSize.shrinkWrap, //  bez powiększania na mobile
       ),
       child: Text(

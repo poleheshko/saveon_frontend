@@ -1,5 +1,4 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +9,7 @@ class ChooseDateClass extends StatefulWidget {
 
   const ChooseDateClass({super.key, this.onDateSelected});
 
+  @override
   State<ChooseDateClass> createState() => _ChooseDateClassState();
 }
 
@@ -89,7 +89,7 @@ class _ChooseDateClassState extends State<ChooseDateClass> {
               ),
               if (showCalendar) ...[
                 SizedBox(height: 25),
-                Container(
+                SizedBox(
                   height: 250,
                   child: CalendarDatePicker2(
                     config: CalendarDatePicker2Config(

@@ -7,6 +7,7 @@ import 'album_row.dart';
 class FoldersClass extends StatefulWidget {
   const FoldersClass({super.key});
 
+  @override
   State<FoldersClass> createState() => _FoldersClass();
 }
 
