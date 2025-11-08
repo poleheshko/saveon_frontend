@@ -6,7 +6,6 @@ import 'package:saveon_frontend/models/home_page_models/current_balance.dart';
 import 'package:saveon_frontend/models/home_page_models/payment_history/payment_history_short.dart';
 
 import 'models/home_page_models/folders/folders_class.dart';
-import 'package:saveon_frontend/models/transactions/transactions_section.dart';
 
 import 'models/transactions/transaction_page.dart';
 

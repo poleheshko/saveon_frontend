@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:saveon_frontend/widgets/bottom_navigation/main_navigation.dart';
+import 'package:saveon_frontend/widgets/login_flow/login_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 void main() {
@@ -9,6 +11,11 @@ void main() {
 
 class SaveOn extends StatelessWidget {
   const SaveOn({super.key});
+
+  Future<bool> _hasSession() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isLoggedIn') ?? false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +33,17 @@ class SaveOn extends StatelessWidget {
         ),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MainNavigation(),
+      home: FutureBuilder<bool>(
+        future: _hasSession(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          return snapshot.data!
+              ? const MainNavigation()
+              : const SaveonLoginPage();
+        },
+      ),
     );
   }
 }
