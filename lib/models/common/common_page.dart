@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'header_profile.dart';
+
 class CommonPage extends StatelessWidget {
   final List<Widget> commonPageContent;
 
@@ -8,13 +10,15 @@ class CommonPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF7F7F7),
-      appBar: AppBar(
-        title: const Text("SaveOn!"),
+      backgroundColor: const Color(0xFFF7F7F7),
+      extendBodyBehindAppBar: true,
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(122),
+        child: HeaderProfile(),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 17),
+          padding: const EdgeInsets.fromLTRB(17, 122 + 16, 17, 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: commonPageContent,

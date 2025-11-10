@@ -103,6 +103,9 @@ flutter:
     - lib/assets/menu/investRegular.svg
     - lib/assets/menu/rankingActive.svg
     - lib/assets/menu/rankingRegular.svg
+    - lib/assets/header_profile/icon_settings.svg
+    - lib/assets/header_profile/profile_image.svg
+    - lib/assets/header_profile/top_bar_background.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

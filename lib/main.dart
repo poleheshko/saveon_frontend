@@ -28,6 +28,7 @@ class SaveOn extends StatelessWidget {
               titleMedium: TextStyle(fontSize: 16),
               bodySmall: TextStyle(fontSize: 10),
               bodyMedium: TextStyle(fontSize: 16),
+              headlineMedium: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
               titleLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
           ),
         ),
