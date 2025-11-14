@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:saveon_frontend/services/sign_up_service.dart';
 import 'package:saveon_frontend/widgets/bottom_navigation/main_navigation.dart';
 import 'package:saveon_frontend/widgets/login_flow/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -42,7 +43,7 @@ class SaveOn extends StatelessWidget {
           }
           return snapshot.data!
               ? const MainNavigation()
-              : const SaveonLoginPage();
+              : const SaveOnSignupPage(); //to test change back to SaveonLoginPage
         },
       ),
     );
