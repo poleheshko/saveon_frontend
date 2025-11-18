@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:saveon_frontend/models/common/coming_soon_alert.dart';
+import 'package:saveon_frontend/models/common/saveon_section.dart';
 
 import '../../services/auth_service.dart';
+import '../../services/sign_up_service.dart';
 import '../bottom_navigation/main_navigation.dart';
 
 class SaveonLoginPage extends StatefulWidget {
@@ -67,7 +70,6 @@ class _SaveonLoginPage extends State<SaveonLoginPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-
                     //Welcome titles
                     const SizedBox(height: 24),
                     Text(
@@ -87,99 +89,87 @@ class _SaveonLoginPage extends State<SaveonLoginPage> {
                     ),
                     const SizedBox(height: 32),
 
-
-                    Container(
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.surface,
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                            color: theme.shadowColor.withOpacity(0.08),
-                            blurRadius: 12,
-                            offset: const Offset(0, 6),
-                          ),
-                        ],
-                      ),
-                      padding: const EdgeInsets.all(24),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            TextFormField(
-                              controller: _emailCtrl,
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: const InputDecoration(
-                                labelText: 'Email',
-                                prefixIcon: Icon(Icons.email_outlined),
+                    SaveOnSection(
+                      SaveOnSectionContent: [
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              TextFormField(
+                                controller: _emailCtrl,
+                                keyboardType: TextInputType.emailAddress,
+                                decoration: const InputDecoration(
+                                  labelText: 'Email',
+                                  prefixIcon: Icon(Icons.email_outlined),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.trim().isEmpty) {
+                                    return 'Please enter your email';
+                                  }
+                                  final emailRegex = RegExp(
+                                    r'^[^@]+@[^@]+\.[^@]+$',
+                                  );
+                                  if (!emailRegex.hasMatch(value.trim())) {
+                                    return 'Enter a valid email';
+                                  }
+                                  return null;
+                                },
                               ),
-                              validator: (value) {
-                                if (value == null || value.trim().isEmpty) {
-                                  return 'Please enter your email';
-                                }
-                                final emailRegex = RegExp(
-                                  r'^[^@]+@[^@]+\.[^@]+$',
-                                );
-                                if (!emailRegex.hasMatch(value.trim())) {
-                                  return 'Enter a valid email';
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 16),
-                            TextFormField(
-                              controller: _passwordCtrl,
-                              obscureText: _hidePassword,
-                              decoration: InputDecoration(
-                                labelText: 'Password',
-                                prefixIcon: const Icon(Icons.lock_outline),
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    _hidePassword
-                                        ? Icons.visibility_off_outlined
-                                        : Icons.visibility_outlined,
+                              const SizedBox(height: 16),
+                              TextFormField(
+                                controller: _passwordCtrl,
+                                obscureText: _hidePassword,
+                                decoration: InputDecoration(
+                                  labelText: 'Password',
+                                  prefixIcon: const Icon(Icons.lock_outline),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _hidePassword
+                                          ? Icons.visibility_off_outlined
+                                          : Icons.visibility_outlined,
+                                    ),
+                                    onPressed:
+                                        () => setState(
+                                          () => _hidePassword = !_hidePassword,
+                                        ),
                                   ),
+                                ),
+                                validator:
+                                    (value) =>
+                                        value == null || value.length < 6
+                                            ? 'Password must be at least 6 characters'
+                                            : null,
+                              ),
+                              const SizedBox(height: 12),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: TextButton(
                                   onPressed:
-                                      () => setState(
-                                        () => _hidePassword = !_hidePassword,
-                                      ),
+                                      () => showComingSoonDialog(context),
+                                  child: const Text('Forgot password?'),
                                 ),
                               ),
-                              validator:
-                                  (value) =>
-                                      value == null || value.length < 6
-                                          ? 'Password must be at least 6 characters'
-                                          : null,
-                            ),
-                            const SizedBox(height: 12),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: TextButton(
-                                onPressed: () {
-                                  // TODO: navigate to password reset page
-                                },
-                                child: const Text('Forgot password?'),
+                              const SizedBox(height: 24),
+                              SizedBox(
+                                width: double.infinity,
+                                child: FilledButton(
+                                  onPressed: _isLoading ? null : _submit,
+                                  child:
+                                      _isLoading
+                                          ? const SizedBox(
+                                            height: 20,
+                                            width: 20,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                            ),
+                                          )
+                                          : const Text('Log in'),
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 24),
-                            SizedBox(
-                              width: double.infinity,
-                              child: FilledButton(
-                                onPressed: _isLoading ? null : _submit,
-                                child:
-                                    _isLoading
-                                        ? const SizedBox(
-                                          height: 20,
-                                          width: 20,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                          ),
-                                        )
-                                        : const Text('Log in'),
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                     const SizedBox(height: 24),
                     Row(
@@ -191,7 +181,11 @@ class _SaveonLoginPage extends State<SaveonLoginPage> {
                         ),
                         TextButton(
                           onPressed: () {
-                            // TODO: navigate to sign up page
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => const SaveOnSignupPage(),
+                              ),
+                            );
                           },
                           child: const Text('Sign up'),
                         ),
