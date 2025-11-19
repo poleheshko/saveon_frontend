@@ -31,6 +31,55 @@ class AuthService {
     return false;
   }
 
+  Future<Map<String, dynamic>?> register({
+    required String email,
+    required String password,
+    required String name,
+    required String surname,
+    String? birthday,
+    String? phoneNumber,
+    String? profileImagePath,
+  }) async {
+    final uri = Uri.parse('$_baseUrl/users');
+    
+    // Build request body with required fields
+    final body = <String, dynamic>{
+      'email': email,
+      'password': password,
+      'name': name,
+      'surname': surname,
+    };
+    
+    // Add optional fields if provided
+    if (birthday != null && birthday.isNotEmpty) {
+      body['birthday'] = birthday;
+    }
+    if (phoneNumber != null && phoneNumber.isNotEmpty) {
+      body['phoneNumber'] = phoneNumber;
+    }
+    if (profileImagePath != null && profileImagePath.isNotEmpty) {
+      body['profileImagePath'] = profileImagePath;
+    }
+    
+    final response = await http.post(
+      uri,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(body),
+    );
+
+    // Temporary debug output
+    print('Register status: ${response.statusCode}');
+    print('Register body: ${response.body}');
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      final json = jsonDecode(response.body) as Map<String, dynamic>;
+      return json;
+    }
+
+    // Return null on failure - the caller can check response body for error details
+    return null;
+  }
+
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('isLoggedIn');

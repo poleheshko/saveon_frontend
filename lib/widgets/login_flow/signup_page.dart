@@ -4,12 +4,12 @@ import 'package:intl/intl.dart';
 import 'package:saveon_frontend/models/common/saveon_button.dart';
 import 'package:saveon_frontend/models/common/saveon_section.dart';
 import 'package:saveon_frontend/models/common/saveon_spacer.dart';
-import 'package:saveon_frontend/models/common/saveon_textbutton.dart';
 
-import '../models/common/clickable_svg_logo.dart';
-import '../models/common/coming_soon_alert.dart';
-import '../models/common/saveon_textbutton_small.dart';
-import '../widgets/login_flow/login_page.dart';
+import '../../models/common/clickable_svg_logo.dart';
+import '../../models/common/coming_soon_alert.dart';
+import '../../models/common/saveon_textbutton_small.dart';
+import '../../services/auth_service.dart';
+import 'login_page.dart';
 
 class SaveOnSignupPage extends StatefulWidget {
   const SaveOnSignupPage({super.key});
@@ -32,6 +32,9 @@ class _SaveOnSignupPage extends State<SaveOnSignupPage> {
 
   //other
   bool _rememberMe = false;
+  bool _isLoading = false;
+
+  final _authService = AuthService();
 
   @override
   void dispose() {
@@ -174,7 +177,9 @@ class _SaveOnSignupPage extends State<SaveOnSignupPage> {
                                 readOnly: true,
                                 decoration: const InputDecoration(
                                   labelText: 'Date of birth (optional)',
-                                  prefixIcon: Icon(Icons.calendar_today_outlined),
+                                  prefixIcon: Icon(
+                                    Icons.calendar_today_outlined,
+                                  ),
                                   hintText: "Select your date of birth",
                                   border: InputBorder.none,
                                   enabledBorder: InputBorder.none,
@@ -183,27 +188,35 @@ class _SaveOnSignupPage extends State<SaveOnSignupPage> {
                                   focusedErrorBorder: InputBorder.none,
                                 ),
                                 validator: (value) {
-                                  if (value == null || value.trim().isEmpty == null) {
-                                    return null;
-                                  }
+                                  // Date of birth is optional, so no validation needed
                                   return null;
                                 },
                                 onTap: () async {
                                   // Show date picker when field is tapped
-                                  FocusScope.of(context).requestFocus(FocusNode()); // Remove keyboard focus
+                                  FocusScope.of(context).requestFocus(
+                                    FocusNode(),
+                                  ); // Remove keyboard focus
 
                                   final DateTime? picked = await showDatePicker(
                                     context: context,
-                                    initialDate: _selectedDateOfBirth ?? DateTime.now().subtract(const Duration(days: 365 * 18)), // Default to 18 years ago
+                                    initialDate:
+                                        _selectedDateOfBirth ??
+                                        DateTime.now().subtract(
+                                          const Duration(days: 365 * 18),
+                                        ),
+                                    // Default to 18 years ago
                                     firstDate: DateTime(1900),
                                     lastDate: DateTime.now(),
                                     helpText: 'Select date of birth',
                                   );
 
-                                  if (picked != null && picked != _selectedDateOfBirth) {
+                                  if (picked != null &&
+                                      picked != _selectedDateOfBirth) {
                                     setState(() {
                                       _selectedDateOfBirth = picked;
-                                      _dateOfBirthCtrl.text = DateFormat('dd.MM.yyyy').format(picked);
+                                      _dateOfBirthCtrl.text = DateFormat(
+                                        'dd.MM.yyyy',
+                                      ).format(picked);
                                     });
                                   }
                                 },
@@ -235,11 +248,15 @@ class _SaveOnSignupPage extends State<SaveOnSignupPage> {
                                         ),
                                   ),
                                 ),
-                                validator:
-                                    (value) =>
-                                        value == null || value.length < 6
-                                            ? 'Password must be at least 6 characters'
-                                            : null,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter a password';
+                                  }
+                                  if (value.length < 8) {
+                                    return 'Password must be at least 8 characters';
+                                  }
+                                  return null;
+                                },
                               ),
                             ],
                           ),
@@ -251,46 +268,41 @@ class _SaveOnSignupPage extends State<SaveOnSignupPage> {
                     //remember me and forget password
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child:
+                      //checkbox for remembering me
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          //checkbox for remembering me
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Checkbox(
-                                value: _rememberMe,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    _rememberMe = value ?? false;
-                                  });
-                                },
-                              ),
-                              Text(
-                                "Remember me",
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                            ],
+                          Checkbox(
+                            value: _rememberMe,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                _rememberMe = value ?? false;
+                              });
+                            },
                           ),
-
-                          //forget password (DEVELOP!)
                           SaveOnTextButtonSmall(
-                            onPressed: () => showComingSoonDialog(context),
-                            buttonLabel: "Forget password?",
+                            buttonLabel:
+                                "I agree to the processing of Personal date",
+                            onPressed: () {
+                              setState(() {
+                                _rememberMe = !_rememberMe;
+                              });
+                            },
                           ),
                         ],
                       ),
                     ),
                     const SizedBox(height: 24),
 
-                    //sign up button DEVELOP!
+                    //sign up button
                     Align(
                       child: Container(
                         child: SaveOnButton(
                           buttonText: "Sign up",
-                          onPressed: () {},
+                          onPressed: _isLoading ? null : _submit,
+                          isLoading: _isLoading,
                         ),
                       ),
                     ),
@@ -339,8 +351,7 @@ class _SaveOnSignupPage extends State<SaveOnSignupPage> {
                             ),
                             Expanded(flex: 1, child: SizedBox()),
                             ClickableSvgLogo(
-                              SvgPath:
-                                  "lib/assets/logos/facebook_logo_30px.svg",
+                              SvgPath: "lib/assets/logos/facebook_logo_30px.svg",
                               onTap: () => showComingSoonDialog(context),
                             ),
                             Expanded(flex: 2, child: SizedBox()),
@@ -360,9 +371,11 @@ class _SaveOnSignupPage extends State<SaveOnSignupPage> {
                             SaveOnTextButtonSmall(
                               buttonLabel: "Sign in",
                               onPressed: () {
-                                Navigator.of(
-                                  context,
-                                ).push(MaterialPageRoute(builder: (_) => const SaveonLoginPage()));
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => const SaveonLoginPage(),
+                                  ),
+                                );
                               },
                             ),
                           ],
@@ -377,5 +390,71 @@ class _SaveOnSignupPage extends State<SaveOnSignupPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _submit() async {
+    // Validate form
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    // Check if user agreed to terms
+    if (!_rememberMe) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please agree to the processing of Personal data'),
+        ),
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    // Convert date of birth to ISO format if provided
+    String? birthday;
+    if (_selectedDateOfBirth != null) {
+      // Format as ISO date string (YYYY-MM-DD)
+      birthday = DateFormat('yyyy-MM-dd').format(_selectedDateOfBirth!);
+    }
+
+    // Call registration API
+    final result = await _authService.register(
+      email: _emailCtrl.text.trim(),
+      password: _passwordCtrl.text,
+      name: _nameCtrl.text.trim(),
+      surname: _surnameCtrl.text.trim(),
+      birthday: birthday,
+      // phoneNumber can be added later if you add a phone field
+      // phoneNumber: _phoneCtrl.text.trim().isEmpty ? null : _phoneCtrl.text.trim(),
+    );
+
+    if (!mounted) return;
+    setState(() => _isLoading = false);
+
+    if (result != null) {
+      // Registration successful
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Registration successful! Please sign in.'),
+          backgroundColor: Colors.green,
+        ),
+      );
+      
+      // Navigate to login page after a short delay
+      await Future.delayed(const Duration(milliseconds: 500));
+      if (!mounted) return;
+      
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const SaveonLoginPage()),
+      );
+    } else {
+      // Registration failed
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Registration failed. Please try again.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }

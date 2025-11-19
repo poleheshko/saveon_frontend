@@ -5,12 +5,14 @@ class SaveOnButton extends StatelessWidget {
   final String buttonText;
   final String? buttonIconPath;
   final Function()? onPressed;
+  final bool isLoading;
 
   const SaveOnButton({
     super.key,
     required this.buttonText,
     this.buttonIconPath,
     this.onPressed,
+    this.isLoading = false,
   });
 
   @override
@@ -29,17 +31,28 @@ class SaveOnButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              buttonText,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
+            if (isLoading)
+              const SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.white,
+                ),
+              )
+            else ...[
+              Text(
+                buttonText,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
-            ),
-            if (buttonIconPath != null) ...[
-              const SizedBox(width: 5),
-              SvgPicture.asset(buttonIconPath!, width: 20, height: 20),
+              if (buttonIconPath != null) ...[
+                const SizedBox(width: 5),
+                SvgPicture.asset(buttonIconPath!, width: 20, height: 20),
+              ],
             ],
           ],
         ),
