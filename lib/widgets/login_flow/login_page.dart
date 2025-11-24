@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:saveon_frontend/models/common/coming_soon_alert.dart';
 import 'package:saveon_frontend/models/common/saveon_button.dart';
 import 'package:saveon_frontend/models/common/saveon_section.dart';
@@ -10,6 +11,7 @@ import '../../models/common/common_page_empty.dart';
 import '../../models/common/saveon_spacer.dart';
 import '../../models/common/saveon_textbutton.dart';
 import '../../services/auth_service.dart';
+import '../../services/user_service.dart';
 import 'signup_page.dart';
 import '../bottom_navigation/main_navigation.dart';
 
@@ -50,6 +52,11 @@ class _SaveonLoginPage extends State<SaveonLoginPage> {
     setState(() => _isLoading = false);
 
     if (success) {
+      // Fetch user data after successful login
+      final userService = Provider.of<UserService>(context, listen: false);
+      await userService.fetchCurrentUser();
+
+      if (!mounted) return;
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => const MainNavigation()),
       );

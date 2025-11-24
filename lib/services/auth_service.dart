@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../config/app_config.dart';
+
 class AuthService {
-  static const _baseUrl = 'http://209.38.164.226:3000';
 
   Future<bool> login({required String email, required String password}) async {
-    final uri = Uri.parse('$_baseUrl/auth/login');
+    final uri = Uri.parse('${AppConfig.baseUrl}/auth/login');
     final response = await http.post(
       uri,
       headers: {'Content-Type': 'application/json'},
@@ -40,7 +41,7 @@ class AuthService {
     String? phoneNumber,
     String? profileImagePath,
   }) async {
-    final uri = Uri.parse('$_baseUrl/users');
+    final uri = Uri.parse('${AppConfig.baseUrl}/users');
     
     // Build request body with required fields
     final body = <String, dynamic>{

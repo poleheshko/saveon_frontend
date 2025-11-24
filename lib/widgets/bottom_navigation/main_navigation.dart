@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../expense_page.dart';
 import '../../friends_page.dart';
 import '../../home_page.dart';
 import '../../invest_page.dart';
 import '../../ranking_page.dart';
+import '../../services/user_service.dart';
 import 'MotionTabBar.dart';
 
 class MainNavigation extends StatefulWidget {
@@ -24,6 +26,19 @@ class _MainNavigationState extends State<MainNavigation> {
     const HomePage(),
     const InvestPage(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    // Refresh user data when navigation loads (user should already be loaded from main.dart)
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final userService = Provider.of<UserService>(context, listen: false);
+      // Only fetch if user is not already loaded
+      if (userService.currentUser == null) {
+        userService.fetchCurrentUser();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
