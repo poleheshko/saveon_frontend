@@ -6,6 +6,8 @@ import 'package:saveon_frontend/widgets/bottom_navigation/main_navigation.dart';
 import 'package:saveon_frontend/widgets/login_flow/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'models/transactions/transaction_service.dart';
+
 
 void main() {
   runApp(const SaveOn());
@@ -16,8 +18,11 @@ class SaveOn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => UserService(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserService()),
+        ChangeNotifierProvider(create: (_) => TransactionService()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
