@@ -49,6 +49,11 @@ class UserService extends ChangeNotifier {
         final json = jsonDecode(response.body) as Map<String, dynamic>;
         _currentUser = UserModel.fromJson(json);
         print('Successfully fetched user: ${_currentUser?.fullName}');
+      } else if (response.statusCode == 401) {
+        // Token is invalid or expired - clear session
+        print('Unauthorized: Token is invalid or expired. Clearing session.');
+        _currentUser = null;
+        await _clearSession();
       } else {
         print('Failed to fetch user: Status ${response.statusCode}, Body: ${response.body}');
         _currentUser = null;
@@ -56,10 +61,18 @@ class UserService extends ChangeNotifier {
     } catch (e) {
       print('Error fetching current user: $e');
       _currentUser = null;
+      // On network errors, we don't clear the session - it might be a temporary issue
     } finally {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  // Clear session data from SharedPreferences
+  Future<void> _clearSession() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('isLoggedIn');
+    await prefs.remove('accessToken');
   }
 
   // Clear user data on logout

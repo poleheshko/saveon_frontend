@@ -69,11 +69,21 @@ class _AppInitializerState extends State<_AppInitializer> {
       // Fetch user data before showing MainNavigation
       final userService = Provider.of<UserService>(context, listen: false);
       await userService.fetchCurrentUser();
+      
+      // If fetchCurrentUser received 401 Unauthorized, it will clear the session automatically
+      // Check if user was successfully fetched - if not, the session was invalid
+      if (mounted) {
+        setState(() {
+          _hasSession = userService.currentUser != null;
+          _isInitializing = false;
+        });
+        return;
+      }
     }
     
     if (mounted) {
       setState(() {
-        _hasSession = hasSession;
+        _hasSession = false;
         _isInitializing = false;
       });
     }
