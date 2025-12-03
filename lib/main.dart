@@ -23,6 +23,7 @@ class SaveOn extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => UserService()),
         ChangeNotifierProvider(create: (_) => TransactionService()),
       ],
+
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
@@ -64,26 +65,16 @@ class _AppInitializerState extends State<_AppInitializer> {
   Future<void> _initializeApp() async {
     final prefs = await SharedPreferences.getInstance();
     final hasSession = prefs.getBool('isLoggedIn') ?? false;
-    
+
     if (hasSession) {
       // Fetch user data before showing MainNavigation
       final userService = Provider.of<UserService>(context, listen: false);
       await userService.fetchCurrentUser();
-      
-      // If fetchCurrentUser received 401 Unauthorized, it will clear the session automatically
-      // Check if user was successfully fetched - if not, the session was invalid
-      if (mounted) {
-        setState(() {
-          _hasSession = userService.currentUser != null;
-          _isInitializing = false;
-        });
-        return;
-      }
     }
-    
+
     if (mounted) {
       setState(() {
-        _hasSession = false;
+        _hasSession = hasSession;
         _isInitializing = false;
       });
     }

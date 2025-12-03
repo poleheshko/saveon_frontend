@@ -7,7 +7,7 @@ class CategoryModel {
   final String categoryIconPath;
   final String labelColor;
   final String textColor;
-  final Bool isSystem;
+  final bool isSystem;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -25,13 +25,13 @@ class CategoryModel {
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) {
     return CategoryModel(
-      userCategoryId: json['fodlerId'] as int,
-      userId: json['userId'] as int,
-      categoryName: json['folderName'] as String,
-      categoryIconPath: json['folderIconPath'] as String,
+      userCategoryId: json['userCategoryId'] as int? ?? 0,
+      userId: json['userId'] as int? ?? 0,
+      categoryName: json['categoryName'] as String,
+      categoryIconPath: json['categoryIconPath'] as String,
       labelColor: json['labelColor'] as String,
       textColor: json['textColor'] as String,
-      isSystem: json['isSystem'] as Bool,
+      isSystem: json['isSystem'] as bool,
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
     );

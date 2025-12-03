@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../data/category_info.dart';
-import '../../../data/transactions_mocked_data.dart';
-import '../../expense_page_models/expense_categories/category_label_prefab.dart';
+import '../../data/category_info.dart';
+import '../../data/transactions_mocked_data.dart';
+import '../expense_page_models/expense_categories/category_label_prefab.dart';
 
-class TransactionPrefab extends StatelessWidget {
+class TransactionPrefabOld extends StatelessWidget {
   final int transactionId;
 
-  const TransactionPrefab({super.key, required this.transactionId});
+  const TransactionPrefabOld({super.key, required this.transactionId});
 
   @override
   Widget build(BuildContext context) {

@@ -33,3 +33,11 @@ class CategoryLabelPrefab extends StatelessWidget {
     );
   }
 }
+
+Color hexToColor(String hex) {
+  hex = hex.replaceAll("#", "");
+  if (hex.length == 6) {
+    hex = "FF$hex"; // pełna nieprzezroczystość
+  }
+  return Color(int.parse(hex, radix: 16));
+}

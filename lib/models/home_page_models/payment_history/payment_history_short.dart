@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:saveon_frontend/models/common/saveon_section.dart';
-import 'package:saveon_frontend/models/home_page_models/payment_history/transaction_prefab.dart';
+import 'package:saveon_frontend/models/transactions/transaction_prefab_old.dart';
 
 class PaymentHistoryShort extends StatefulWidget {
   const PaymentHistoryShort({super.key});
@@ -26,7 +26,7 @@ class _PaymentHistoryShort extends State<PaymentHistoryShort> {
           itemBuilder: (context, index) {
             return Column(
               children: [
-                TransactionPrefab(transactionId: index),
+                TransactionPrefabOld(transactionId: index),
 
                 if (index != transactionCount - 1) ...[
                   const SizedBox(height: 10),
