@@ -25,8 +25,8 @@ class HeaderProfile extends StatelessWidget {
               Positioned.fill(
                 child: SvgPicture.asset(
                   "lib/assets/header_profile/top_bar_background.svg",
-                  fit: BoxFit.fitWidth,
-                  alignment: Alignment.topCenter,
+                  fit: BoxFit.fill,
+                  alignment: Alignment.bottomCenter,
                 ),
               ),
 
