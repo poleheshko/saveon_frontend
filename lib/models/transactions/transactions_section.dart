@@ -3,8 +3,8 @@ import 'package:saveon_frontend/models/common/saveon_section.dart';
 import 'package:saveon_frontend/models/transactions/transaction_model.dart';
 import 'package:saveon_frontend/models/transactions/transaction_prefab.dart';
 
-import '../../data/transactions_mocked_data.dart';
-import 'transaction_prefab_old.dart';
+import '../../utils/date_utils.dart';
+
 
 class TransactionSection extends StatefulWidget {
   final DateTime date;
@@ -27,7 +27,7 @@ class _TransactionSection extends State<TransactionSection> {
     return Column(
       children: [
         SaveOnSection(
-          sectionTitle: _formatDate(widget.date),
+          sectionTitle: SaveOnDateUtils.formatDate(widget.date),
           SaveOnSectionContent: [
             ListView.builder(
               padding: EdgeInsets.zero,
@@ -55,11 +55,5 @@ class _TransactionSection extends State<TransactionSection> {
         ),
       ],
     );
-  }
-
-  String _formatDate(DateTime date) {
-    return '${date.day.toString().padLeft(2, '0')}.'
-        '${date.month.toString().padLeft(2, '0')}.'
-        '${date.year}';
   }
 }

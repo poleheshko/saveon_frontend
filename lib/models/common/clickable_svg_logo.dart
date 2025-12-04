@@ -9,6 +9,6 @@ class ClickableSvgLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(child: SvgPicture.asset(SvgPath), onTap: onTap);
+    return InkWell(onTap: onTap, child: SvgPicture.asset(SvgPath));
   }
 }

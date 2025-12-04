@@ -58,7 +58,7 @@ class MotionBadgeWidget extends StatelessWidget {
         '$text',
         style: TextStyle(
           color: _textColor,
-          fontSize: _size != null ? (_size / 2) : 9,
+          fontSize: (_size / 2),
           fontWeight: FontWeight.w600,
           letterSpacing: 0.5,
         ),

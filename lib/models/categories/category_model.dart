@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 class CategoryModel {
   final int userCategoryId;

@@ -103,8 +103,9 @@ class _SaveOnSignupPage extends State<SaveOnSignupPage> {
                             focusedErrorBorder: InputBorder.none,
                           ),
                           validator: (value) {
-                            if (value == null || value.trim().isEmpty)
+                            if (value == null || value.trim().isEmpty) {
                               return 'Please enter your name';
+                            }
                             if (value.trim().length < 2) {
                               return 'Name must be at least 2 characters';
                             }
@@ -128,8 +129,9 @@ class _SaveOnSignupPage extends State<SaveOnSignupPage> {
                             focusedErrorBorder: InputBorder.none,
                           ),
                           validator: (value) {
-                            if (value == null || value.trim().isEmpty)
+                            if (value == null || value.trim().isEmpty) {
                               return 'Please enter your surname';
+                            }
                             if (value.trim().length < 2) {
                               return 'Surname must be at least 2 characters';
                             }

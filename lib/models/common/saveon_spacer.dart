@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
 class SaveOnSpacer extends StatelessWidget {
+  const SaveOnSpacer({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(

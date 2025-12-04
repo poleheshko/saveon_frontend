@@ -13,7 +13,7 @@ class HeaderProfile extends StatelessWidget {
     return Consumer<UserService>(
       builder: (context, userService, child) {
         final user = userService.currentUser;
-        return Container(
+        return SizedBox(
           width: double.infinity,
           height: 122,
 

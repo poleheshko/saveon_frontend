@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:saveon_frontend/models/transactions/transaction_model.dart';
 
-import '../../data/category_info.dart';
-import '../../data/transactions_mocked_data.dart';
+import '../../utils/date_utils.dart';
 import '../expense_page_models/expense_categories/category_label_prefab.dart';
 
 class TransactionPrefab extends StatelessWidget {
@@ -48,7 +47,7 @@ class TransactionPrefab extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.only(left: 10),
                     child: Text(
-                      transaction.date.toString(),
+                      SaveOnDateUtils.formatTime(transaction.date),
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                   )

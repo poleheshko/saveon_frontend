@@ -17,7 +17,7 @@ class _TransacitonPage extends State<TransacitonPage> {
   @override
   void initState() {
     super.initState();
-    // Pobieramy ttransakcje po pierwszym zbudowaniu
+    // Pobieramy transakcje po pierwszym zbudowaniu
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<TransactionService>(
         context,
@@ -61,16 +61,20 @@ class _TransacitonPage extends State<TransacitonPage> {
 
         // 4) Grupowanie po dacie
         final grouped = _groupedTransactionsByDate(transactions);
-        print('$grouped');
 
         // 5) Tworzymy listę sekcji (po jednej na dzień)
         final sections = grouped.entries.map((entry) {
           final date = entry.key;
           final dayTransactions = entry.value;
 
-          return TransactionSection(
-            date: date,
-            transactions: dayTransactions,
+          return Column(
+            children: [
+              TransactionSection(
+                date: date,
+                transactions: dayTransactions,
+              ),
+              SizedBox(height: 20)
+            ],
           );
         }).toList();
 
