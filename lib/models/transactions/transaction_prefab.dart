@@ -57,12 +57,20 @@ class TransactionPrefab extends StatelessWidget {
           ),
 
           // ***amount
-          Text(
-            '-${transaction.amount.toString()} zł',
+          transaction.type == 'EXPENSE'
+              ? Text(
+            '-${transaction.amount} zł',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Color(0xFFE1075E),
+              color: const Color(0xFFE1075E),
             ),
           )
+              : Text(
+            '+${transaction.amount} zł',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: const Color(0xFF000000),
+            ),
+          )
+
         ]
       ),
     );
