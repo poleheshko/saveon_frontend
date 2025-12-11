@@ -1,4 +1,6 @@
 
+import 'dart:ui';
+
 class CategoryModel {
   final int userCategoryId;
   final int userId;
@@ -34,5 +36,22 @@ class CategoryModel {
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
     );
+  }
+
+  // Helper metody do konwersji hex string na Color
+  Color get labelColorAsColor {
+    return _hexToColor(labelColor);
+  }
+
+  Color get textColorAsColor {
+    return _hexToColor(textColor);
+  }
+
+  Color _hexToColor(String hex) {
+    hex = hex.replaceAll("#", "");
+    if (hex.length == 6) {
+      hex = "FF$hex"; // pełna nieprzezroczystość
+    }
+    return Color(int.parse(hex, radix: 16));
   }
 }

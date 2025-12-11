@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:saveon_frontend/models/categories/category_service.dart';
 import 'package:saveon_frontend/services/user_service.dart';
 import 'package:saveon_frontend/widgets/bottom_navigation/main_navigation.dart';
 import 'package:saveon_frontend/widgets/login_flow/login_page.dart';
@@ -22,6 +23,7 @@ class SaveOn extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => UserService()),
         ChangeNotifierProvider(create: (_) => TransactionService()),
+        ChangeNotifierProvider(create: (_) => CategoryService()),
       ],
 
       child: MaterialApp(

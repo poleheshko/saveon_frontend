@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:saveon_frontend/models/common/saveon_button.dart';
 
 import 'data/album_model.dart';
-import 'data/category_info.dart';
+import 'models/categories/category_model.dart';
 import 'models/common/common_page.dart';
 import 'models/expense_page_models/album_selector/album_selector_class.dart';
 import 'models/expense_page_models/amount_input.dart';
@@ -18,7 +18,7 @@ class ExpensePage extends StatefulWidget {
 }
 
 class _ExpensePageState extends State<ExpensePage> {
-  Category? selectedCategory;
+  CategoryModel? selectedCategory;
   DateTime selectedDate = DateTime.now();
   double? enteredAmount;
   Set<int>? selectedAlbumes;
