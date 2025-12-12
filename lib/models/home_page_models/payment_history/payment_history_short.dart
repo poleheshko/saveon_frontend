@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
+import 'package:saveon_frontend/models/categories/category_service.dart';
 import 'package:saveon_frontend/models/common/saveon_section.dart';
 import 'package:saveon_frontend/models/transactions/transaction_prefab_old.dart';
 
@@ -11,6 +13,15 @@ class PaymentHistoryShort extends StatefulWidget {
 
 class _PaymentHistoryShort extends State<PaymentHistoryShort> {
   final transactionCount = 4;
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch categories after first loading
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<CategoryService>(context, listen: false).fetchCategories();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
