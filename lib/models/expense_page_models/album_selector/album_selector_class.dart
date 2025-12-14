@@ -1,102 +1,137 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:saveon_frontend/models/common/saveon_section.dart';
 
-import '../../../data/album_model.dart';
+import '../../folders/folder_service.dart';
 
-class AlbumSelectorClass extends StatefulWidget {
+class FolderSelectorClass extends StatefulWidget {
   final Function(Set<int>)?
   onAlbumSelected; // ✅ callback, który pózniej przekaże dane do expense page
 
-  const AlbumSelectorClass({super.key, this.onAlbumSelected});
+  const FolderSelectorClass({super.key, this.onAlbumSelected});
 
   @override
-  State<AlbumSelectorClass> createState() => _AlbumSelectorClassState();
+  State<FolderSelectorClass> createState() => _FolderSelectorClassState();
 }
 
-class _AlbumSelectorClassState extends State<AlbumSelectorClass> {
-  final foldersCount = 3;
+class _FolderSelectorClassState extends State<FolderSelectorClass> {
   final Set<int> _selectedIndices = {};
 
   @override
+  void initState() {
+    super.initState();
+
+    //Fetch folders after first loading
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<FolderService>(context, listen: false).fetchFolders();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SaveOnSection(
-      SaveOnSectionContent: [
-        ListView.builder(
-          padding: EdgeInsets.zero,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
+    return Consumer<FolderService>(
+      builder: (context, folderService, child) {
+        final folders = folderService.folder;
+        final foldersCount = folders.length;
 
-          itemCount: foldersCount,
-          itemBuilder: (context, index) {
-            final bool isSelected = _selectedIndices.contains(index);
+        if (folderService.isLoading && folders.isEmpty) {
+          return SaveOnSection(
+            SaveOnSectionContent: [Center(child: CupertinoActivityIndicator())],
+          );
+        }
 
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ListTile(
-                  selected: isSelected,
+        if (folderService.error != null && folders.isEmpty) {
+          return SaveOnSection(
+            SaveOnSectionContent: [
+              Center(child: Text('Error: ${folderService.error}')),
+            ],
+          );
+        }
 
-                  // styling part
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 0,
-                    vertical: 0,
-                  ),
-                  dense: true,
-                  visualDensity: const VisualDensity(vertical: -4),
-                  minVerticalPadding: 0,
-                  horizontalTitleGap: 5,
-                  //distance between leading and title
-                  selectedColor: Color(0xFF5D52FF),
+        return SaveOnSection(
+          SaveOnSectionContent: [
+            ListView.builder(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
 
-                  leading: SvgPicture.asset(
-                    ListOfAlbums[index].albumIconPath,
-                    width: 30,
-                    height: 30,
-                  ),
-                  title: Text(
-                    ListOfAlbums[index].albumName,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  trailing:
+              itemCount: foldersCount,
+              itemBuilder: (context, index) {
+                final bool isSelected = _selectedIndices.contains(index);
+
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      selected: isSelected,
+
+                      // styling part
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 0,
+                        vertical: 0,
+                      ),
+                      dense: true,
+                      visualDensity: const VisualDensity(vertical: -4),
+                      minVerticalPadding: 0,
+                      horizontalTitleGap: 5,
+                      //distance between leading and title
+                      selectedColor: Color(0xFF5D52FF),
+
+                      leading: SvgPicture.asset(
+                        folders.elementAt(index).folderIconPath,
+                        width: 30,
+                        height: 30,
+                      ),
+                      title: Text(
+                        folders.elementAt(index).folderName,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyMedium,
+                      ),
+                      trailing:
                       isSelected
                           ? SvgPicture.asset(
-                            "lib/assets/album_icons/item_selected.svg",
-                            height: 20,
-                            width: 20,
-                          )
+                        "lib/assets/album_icons/item_selected.svg",
+                        height: 20,
+                        width: 20,
+                      )
                           : SvgPicture.asset(
-                            "lib/assets/album_icons/item_unselected.svg",
-                            height: 20,
-                            width: 20,
-                          ),
-                  onTap: () {
-                    setState(() {
-                      // Jeśli indeks jest już w zbiorze, usuń go (odznaczanie)
-                      if (_selectedIndices.contains(index)) {
-                        _selectedIndices.remove(index);
-                      }
-                      // Jeśli go nie ma, dodaj go (zaznaczanie)
-                      else {
-                        _selectedIndices.add(index);
-                      }
+                        "lib/assets/album_icons/item_unselected.svg",
+                        height: 20,
+                        width: 20,
+                      ),
+                      onTap: () {
+                        setState(() {
+                          // Jeśli indeks jest już w zbiorze, usuń go (odznaczanie)
+                          if (_selectedIndices.contains(index)) {
+                            _selectedIndices.remove(index);
+                          }
+                          // Jeśli go nie ma, dodaj go (zaznaczanie)
+                          else {
+                            _selectedIndices.add(index);
+                          }
 
-                      // wywołanie callbacku
-                      widget.onAlbumSelected?.call(_selectedIndices);
-                    });
-                  },
-                ),
+                          // wywołanie callbacku
+                          widget.onAlbumSelected?.call(_selectedIndices);
+                        });
+                      },
+                    ),
 
-                if (index != foldersCount - 1) ...[
-                  const SizedBox(height: 10),
-                  Container(color: Color(0xFFC0C0C0), height: 0.2),
-                  const SizedBox(height: 10),
-                ],
-              ],
-            );
-          },
-        ),
-      ],
+                    if (index != foldersCount - 1) ...[
+                      const SizedBox(height: 10),
+                      Container(color: Color(0xFFC0C0C0), height: 0.2),
+                      const SizedBox(height: 10),
+                    ],
+                  ],
+                );
+              },
+            ),
+          ],
+        );
+      }
     );
   }
 }

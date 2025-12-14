@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 import 'package:saveon_frontend/models/common/saveon_section.dart';
+import 'package:saveon_frontend/models/folders/folder_service.dart';
 
-import '../../../data/album_model.dart';
-import 'album_row.dart';
+import '../../folders/folder_model.dart';
+import 'folder_row.dart';
 
 class FoldersClass extends StatefulWidget {
   const FoldersClass({super.key});
@@ -12,36 +14,67 @@ class FoldersClass extends StatefulWidget {
 }
 
 class _FoldersClass extends State<FoldersClass> {
-  final foldersCount = 3;
+  FolderModel? selectedFolder;
+
+  @override
+  void initState() {
+    super.initState();
+
+    //Fetch folders after first loading
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<FolderService>(context, listen: false).fetchFolders();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SaveOnSection(
-      SaveOnSectionContent: [
-        ListView.builder(
-          padding: EdgeInsets.zero,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
+    return Consumer<FolderService>(
+        builder: (context, folderService, child) {
+          final folders = folderService.folder;
+          final foldersCount = folders.length;
 
-          itemCount: foldersCount,
-          itemBuilder: (context, index) {
-            return Column(
-              children: [
-                AlbumRow(albumId: ListOfAlbums[index].albumId),
+          if (folderService.isLoading && folders.isEmpty) {
+            return SaveOnSection(
+              SaveOnSectionContent: [Center(child: CupertinoActivityIndicator())],
+            );
+          }
 
-                if (index != foldersCount - 1) ...[
-                  const SizedBox(height: 10),
-                  Container(color: Color(0xFFC0C0C0), height: 0.2),
-                  const SizedBox(height: 10),
-                ],
+          if (folderService.error != null && folders.isEmpty) {
+            return SaveOnSection(
+              SaveOnSectionContent: [
+                Center(child: Text('Error: ${folderService.error}')),
               ],
             );
           }
-        )
-      ],
-      sectionTitle: 'Folders',
-      textLabelButton: 'Add',
-      textButtonOnPressed: () {},
+
+          return SaveOnSection(
+            SaveOnSectionContent: [
+              ListView.builder(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+
+                  itemCount: foldersCount,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        FolderRow(folder: folders[index]),
+
+                        if (index != foldersCount - 1) ...[
+                          const SizedBox(height: 10),
+                          Container(color: Color(0xFFC0C0C0), height: 0.2),
+                          const SizedBox(height: 10),
+                        ],
+                      ],
+                    );
+                  }
+              )
+            ],
+            sectionTitle: 'Folders',
+            textLabelButton: 'Add',
+            textButtonOnPressed: () {},
+          );
+        }
     );
   }
 }

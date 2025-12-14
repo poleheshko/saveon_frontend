@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../config/app_config.dart';
 import 'folder_model.dart';
 
-class CategoryService extends ChangeNotifier {
+class FolderService extends ChangeNotifier {
   // === PRIVATE FIELDS ===
   List<FolderModel> _folders = [];
   bool _isLoading = false;

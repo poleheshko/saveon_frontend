@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:saveon_frontend/models/common/saveon_button.dart';
 
-import 'data/album_model.dart';
 import 'models/categories/category_model.dart';
 import 'models/common/common_page.dart';
 import 'models/expense_page_models/album_selector/album_selector_class.dart';
 import 'models/expense_page_models/amount_input.dart';
 import 'models/expense_page_models/date/choose_date_class.dart';
 import 'models/expense_page_models/expense_categories/choose_category_class.dart';
+import 'models/folders/folder_service.dart';
 
 class ExpensePage extends StatefulWidget {
   const ExpensePage({super.key});
@@ -67,7 +68,7 @@ class _ExpensePageState extends State<ExpensePage> {
           ),
           const SizedBox(width: double.infinity, height: 20),
 
-          AlbumSelectorClass(
+          FolderSelectorClass(
             onAlbumSelected: (selectedAlbums) {
               setState(() {
                 selectedAlbumes = selectedAlbums;
@@ -80,10 +81,12 @@ class _ExpensePageState extends State<ExpensePage> {
           // test
           SaveOnButton(
             onPressed: () {
+              final folders = Provider.of<FolderService>(context, listen: false).folder;
               print('Wybrana kategoria: ${selectedCategory?.categoryName}');
               print('Wybrana data: ${selectedDate.toLocal()}');
               print('Wprowadzona kwota: $enteredAmount');
-              print('Wybrane albumy: ${selectedAlbumes?.map((i) => ListOfAlbums[i].albumName).join(', ')}');            },
+              print('Wybrane albumy: ${selectedAlbumes?.map((i) => folders[i].folderName).join(', ')}');
+            },
             buttonText: 'Save',
           ),
 
