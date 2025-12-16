@@ -7,6 +7,7 @@ import 'package:saveon_frontend/widgets/bottom_navigation/main_navigation.dart';
 import 'package:saveon_frontend/widgets/login_flow/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'models/folders/folder_service.dart';
+import 'models/summary/summary_service.dart';
 import 'models/transactions/transaction_service.dart';
 
 
@@ -25,6 +26,7 @@ class SaveOn extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => TransactionService()),
         ChangeNotifierProvider(create: (_) => CategoryService()),
         ChangeNotifierProvider(create: (_) => FolderService()),
+        ChangeNotifierProvider(create: (_) => SummaryService()),
       ],
 
       child: MaterialApp(
