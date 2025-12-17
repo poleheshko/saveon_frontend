@@ -43,4 +43,9 @@ class SaveOnDateUtils {
   static DateTime dateOnly(DateTime date) {
     return DateTime(date.year, date.month, date.day);
   }
+
+  /// Returns a DateTime for API
+  static String formatDateForApi(DateTime date) {
+    return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+  }
 }

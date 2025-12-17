@@ -24,9 +24,15 @@ class SummaryService extends ChangeNotifier {
     return prefs.getString('accessToken');
   }
 
-  Future<void> getSummary({int? userId}) async {
+  Future<void> getSummary({
+    int? userId,
+    int? accountId,
+    String? from,
+    String? to
+  }) async {
     _isLoading = true;
     _error = null;
+
     notifyListeners(); // UI: Zaczynam ładować
 
     try {
@@ -36,6 +42,9 @@ class SummaryService extends ChangeNotifier {
       // ==== QUERY PARAMS ====
       final queryParams = <String, String>{};
       if (userId != null) queryParams['userId'] = userId.toString();
+      if (accountId != null) queryParams['accountId'] = accountId.toString();
+      if (from != null) queryParams['from'] = from;
+      if (to != null) queryParams['to'] = to;
 
       final uri = Uri.parse(
         '${AppConfig.baseUrl}/transactions/stats/summary',
