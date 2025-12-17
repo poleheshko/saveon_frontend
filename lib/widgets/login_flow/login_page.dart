@@ -42,27 +42,35 @@ class _SaveonLoginPage extends State<SaveonLoginPage> {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
-    final success = await _authService.login(
-      email: _emailCtrl.text.trim(),
-      password: _passwordCtrl.text,
-    );
-
-    if (!mounted) return;
-    setState(() => _isLoading = false);
-
-    if (success) {
-      // Fetch user data after successful login
-      final userService = Provider.of<UserService>(context, listen: false);
-      await userService.fetchCurrentUser();
+    try {
+      final success = await _authService.login(
+        email: _emailCtrl.text.trim(),
+        password: _passwordCtrl.text,
+      );
 
       if (!mounted) return;
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const MainNavigation()),
-      );
-    } else {
+
+      if (success) {
+        // Fetch user data after successful login
+        final userService = Provider.of<UserService>(context, listen: false);
+        await userService.fetchCurrentUser();
+
+        if (!mounted) return;
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const MainNavigation()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Invalid email or password')),
+        );
+      }
+    } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Invalid email or password')),
+        SnackBar(content: Text('Sign in failed: $e')),
       );
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 

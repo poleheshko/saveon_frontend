@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -37,13 +38,15 @@ class UserService extends ChangeNotifier {
       }
 
       final uri = Uri.parse('${AppConfig.baseUrl}/users');
-      final response = await http.get(
-        uri,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-      );
+      final response = await http
+          .get(
+            uri,
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $token',
+            },
+          )
+          .timeout(Duration(seconds: AppConfig.requestTimeoutSeconds));
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final json = jsonDecode(response.body) as Map<String, dynamic>;
@@ -58,6 +61,9 @@ class UserService extends ChangeNotifier {
         print('Failed to fetch user: Status ${response.statusCode}, Body: ${response.body}');
         _currentUser = null;
       }
+    } on TimeoutException catch (e) {
+      print('Timeout fetching current user: $e');
+      _currentUser = null;
     } catch (e) {
       print('Error fetching current user: $e');
       _currentUser = null;

@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -7,29 +9,42 @@ import '../config/app_config.dart';
 class AuthService {
 
   Future<bool> login({required String email, required String password}) async {
-    final uri = Uri.parse('${AppConfig.baseUrl}/auth/login');
-    final response = await http.post(
-      uri,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'email': email, 'password': password}),
-    );
+    try {
+      final uri = Uri.parse('${AppConfig.baseUrl}/auth/login');
+      final response = await http
+          .post(
+            uri,
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode({'email': email, 'password': password}),
+          )
+          .timeout(Duration(seconds: AppConfig.requestTimeoutSeconds));
 
-    // Temporary debug output
-    print('Login status: ${response.statusCode}');
-    print('Login body: ${response.body}');
+      // Temporary debug output
+      print('Login status: ${response.statusCode}');
+      print('Login body: ${response.body}');
 
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      final json = jsonDecode(response.body) as Map<String, dynamic>;
-      final token = json['accessToken'] as String?;
-      if (token == null) return false;
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        final json = jsonDecode(response.body) as Map<String, dynamic>;
+        final token = json['accessToken'] as String?;
+        if (token == null) return false;
 
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('isLoggedIn', true);
-      await prefs.setString('accessToken', token);
-      return true;
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('isLoggedIn', true);
+        await prefs.setString('accessToken', token);
+        return true;
+      }
+
+      return false;
+    } on TimeoutException catch (e) {
+      print('Login timeout: $e');
+      return false;
+    } on SocketException catch (e) {
+      print('Login network error: $e');
+      return false;
+    } catch (e) {
+      print('Login error: $e');
+      return false;
     }
-
-    return false;
   }
 
   Future<Map<String, dynamic>?> register({
@@ -41,44 +56,57 @@ class AuthService {
     String? phoneNumber,
     String? profileImagePath,
   }) async {
-    final uri = Uri.parse('${AppConfig.baseUrl}/users');
-    
-    // Build request body with required fields
-    final body = <String, dynamic>{
-      'email': email,
-      'password': password,
-      'name': name,
-      'surname': surname,
-    };
-    
-    // Add optional fields if provided
-    if (birthday != null && birthday.isNotEmpty) {
-      body['birthday'] = birthday;
-    }
-    if (phoneNumber != null && phoneNumber.isNotEmpty) {
-      body['phoneNumber'] = phoneNumber;
-    }
-    if (profileImagePath != null && profileImagePath.isNotEmpty) {
-      body['profileImagePath'] = profileImagePath;
-    }
-    
-    final response = await http.post(
-      uri,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(body),
-    );
+    try {
+      final uri = Uri.parse('${AppConfig.baseUrl}/users');
 
-    // Temporary debug output
-    print('Register status: ${response.statusCode}');
-    print('Register body: ${response.body}');
+      // Build request body with required fields
+      final body = <String, dynamic>{
+        'email': email,
+        'password': password,
+        'name': name,
+        'surname': surname,
+      };
 
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      final json = jsonDecode(response.body) as Map<String, dynamic>;
-      return json;
+      // Add optional fields if provided
+      if (birthday != null && birthday.isNotEmpty) {
+        body['birthday'] = birthday;
+      }
+      if (phoneNumber != null && phoneNumber.isNotEmpty) {
+        body['phoneNumber'] = phoneNumber;
+      }
+      if (profileImagePath != null && profileImagePath.isNotEmpty) {
+        body['profileImagePath'] = profileImagePath;
+      }
+
+      final response = await http
+          .post(
+            uri,
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode(body),
+          )
+          .timeout(Duration(seconds: AppConfig.requestTimeoutSeconds));
+
+      // Temporary debug output
+      print('Register status: ${response.statusCode}');
+      print('Register body: ${response.body}');
+
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        final json = jsonDecode(response.body) as Map<String, dynamic>;
+        return json;
+      }
+
+      // Return null on failure - the caller can check response body for error details
+      return null;
+    } on TimeoutException catch (e) {
+      print('Register timeout: $e');
+      return null;
+    } on SocketException catch (e) {
+      print('Register network error: $e');
+      return null;
+    } catch (e) {
+      print('Register error: $e');
+      return null;
     }
-
-    // Return null on failure - the caller can check response body for error details
-    return null;
   }
 
   Future<void> logout() async {

@@ -393,67 +393,73 @@ class _SaveOnSignupPage extends State<SaveOnSignupPage> {
     }
 
     setState(() => _isLoading = true);
+    try {
+      // Convert date of birth to ISO format if provided
+      String? birthday;
+      if (_selectedDateOfBirth != null) {
+        // Format as ISO date string (YYYY-MM-DD)
+        birthday = DateFormat('yyyy-MM-dd').format(_selectedDateOfBirth!);
+      }
 
-    // Convert date of birth to ISO format if provided
-    String? birthday;
-    if (_selectedDateOfBirth != null) {
-      // Format as ISO date string (YYYY-MM-DD)
-      birthday = DateFormat('yyyy-MM-dd').format(_selectedDateOfBirth!);
-    }
+      // Call registration API
+      final result = await _authService.register(
+        email: _emailCtrl.text.trim(),
+        password: _passwordCtrl.text,
+        name: _nameCtrl.text.trim(),
+        surname: _surnameCtrl.text.trim(),
+        birthday: birthday,
+        // phoneNumber can be added later if you add a phone field
+        // phoneNumber: _phoneCtrl.text.trim().isEmpty ? null : _phoneCtrl.text.trim(),
+      );
 
-    // Call registration API
-    final result = await _authService.register(
-      email: _emailCtrl.text.trim(),
-      password: _passwordCtrl.text,
-      name: _nameCtrl.text.trim(),
-      surname: _surnameCtrl.text.trim(),
-      birthday: birthday,
-      // phoneNumber can be added later if you add a phone field
-      // phoneNumber: _phoneCtrl.text.trim().isEmpty ? null : _phoneCtrl.text.trim(),
-    );
+      if (!mounted) return;
 
-    if (!mounted) return;
-    setState(() => _isLoading = false);
+      if (result == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Registration failed. Please try again.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
 
-    if (result != null) {
-      // Registration successful
+      // Registration successful - try auto login
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Registration successful. Welcome!'),
+          content: Text('Registration successful. Logging you in...'),
           backgroundColor: Colors.green,
         ),
       );
 
-      // Navigate to login page after a short delay
-      await Future.delayed(const Duration(milliseconds: 500));
+      final success = await _authService.login(
+        email: _emailCtrl.text.trim(),
+        password: _passwordCtrl.text,
+      );
+
       if (!mounted) return;
 
+      if (success) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const MainNavigation()),
+        );
+        return;
+      }
+
+      // If auto login fails, send user to login screen
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => const SaveonLoginPage()),
       );
-    } else {
-      // Registration failed
+    } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Registration failed. Please try again.'),
+        SnackBar(
+          content: Text('Sign up failed: $e'),
           backgroundColor: Colors.red,
         ),
       );
-    }
-
-    final success = await _authService.login(
-      email: _emailCtrl.text.trim(),
-      password: _passwordCtrl.text,
-    );
-
-    if (success) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const MainNavigation()),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Invalid email or password')),
-      );
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 }
