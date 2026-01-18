@@ -17,7 +17,7 @@ class FolderModel {
 
   factory FolderModel.fromJson(Map<String, dynamic> json) {
     return FolderModel(
-      folderId: json['folderId'] as int? ?? json['fodlerId'] as int? ?? 0,
+      folderId: json['folderId'] as int? ?? json['folderId'] as int? ?? 0,
       userId: json['userId'] as int? ?? 0,
       folderName: json['folderName'] as String? ?? '',
       folderIconPath: json['folderIconPath'] as String? ?? '',
