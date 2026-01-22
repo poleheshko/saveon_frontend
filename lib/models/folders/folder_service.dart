@@ -50,6 +50,12 @@ class FolderService extends ChangeNotifier {
         }
       );
 
+      // 🔍 LOG CAŁEGO RESPONSE
+      print('🟡 [FOLDERS] Response Status: ${response.statusCode}');
+      print('🟡 [FOLDERS] Full Response Body:');
+      print(response.body);
+      print('🟡 [FOLDERS] --- End of Response ---\n');
+
       // ==== SUCCESS ====
       if(response.statusCode >= 200 && response.statusCode < 300) {
         final List<dynamic> jsonList = jsonDecode(response.body);

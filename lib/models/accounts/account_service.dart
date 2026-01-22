@@ -14,7 +14,7 @@ class AccountService extends ChangeNotifier {
   String? _error;
 
   // === PUBLIC FIELDS ===
-  List<AccountModel> get folder => _accounts;
+  List<AccountModel> get accounts => _accounts;
   bool get isLoading => _isLoading;
   String? get error => _error;
 
@@ -49,6 +49,12 @@ class AccountService extends ChangeNotifier {
             'Authorization': 'Bearer $token',
           }
       );
+
+      // 🔍 LOG CAŁEGO RESPONSE
+      print('🔵 [ACCOUNTS] Response Status: ${response.statusCode}');
+      print('🔵 [ACCOUNTS] Full Response Body:');
+      print(response.body);
+      print('🔵 [ACCOUNTS] --- End of Response ---\n');
 
       // ==== SUCCESS ====
       if(response.statusCode >= 200 && response.statusCode <300) {

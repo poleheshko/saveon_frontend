@@ -52,6 +52,12 @@ class CategoryService extends ChangeNotifier {
         },
       );
 
+      // 🔍 LOG CAŁEGO RESPONSE
+      print('🟢 [CATEGORIES] Response Status: ${response.statusCode}');
+      print('🟢 [CATEGORIES] Full Response Body:');
+      print(response.body);
+      print('🟢 [CATEGORIES] --- End of Response ---\n');
+
       // ==== SUCCESS ====
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final List<dynamic> jsonList = jsonDecode(response.body);
