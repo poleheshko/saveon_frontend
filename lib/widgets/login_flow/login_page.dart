@@ -5,10 +5,13 @@ import 'package:saveon_frontend/models/common/saveon_button.dart';
 import 'package:saveon_frontend/models/common/saveon_section.dart';
 import 'package:saveon_frontend/models/common/saveon_textbutton_small.dart';
 
+import '../../models/accounts/account_service.dart';
+import '../../models/categories/category_service.dart';
 import '../../models/common/clickable_svg_logo.dart';
 import '../../models/common/common_page_empty.dart';
 import '../../models/common/saveon_spacer.dart';
 import '../../models/common/saveon_textbutton.dart';
+import '../../models/folders/folder_service.dart';
 import '../../services/auth_service.dart';
 import '../../services/user_service.dart';
 import 'signup_page.dart';
@@ -53,7 +56,15 @@ class _SaveonLoginPage extends State<SaveonLoginPage> {
       if (success) {
         // Fetch user data after successful login
         final userService = Provider.of<UserService>(context, listen: false);
-        await userService.fetchCurrentUser();
+        final accountService = Provider.of<AccountService>(context, listen: false);
+        final categoryService = Provider.of<CategoryService>(context, listen: false);
+        final folderService = Provider.of<FolderService>(context, listen: false);
+        await Future.wait([
+          userService.fetchCurrentUser(),
+          accountService.fetchAccounts(),
+          categoryService.fetchCategories(),
+          folderService.fetchFolders(),
+        ]);
 
         if (!mounted) return;
         Navigator.of(context).pushReplacement(

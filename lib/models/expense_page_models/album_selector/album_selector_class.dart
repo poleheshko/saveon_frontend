@@ -115,7 +115,7 @@ class _FolderSelectorClassState extends State<FolderSelectorClass> {
                           }
 
                           // wywołanie callbacku
-                          widget.onAlbumSelected?.call(_selectedIndices);
+                          widget.onAlbumSelected?.call(Set<int>.from(_selectedIndices));
                         });
                       },
                     ),
