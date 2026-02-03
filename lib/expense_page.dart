@@ -27,6 +27,7 @@ class _ExpensePageState extends State<ExpensePage> {
   DateTime selectedDate = DateTime.now();
   double? enteredAmount;
   Set<int>? selectedAlbumes;
+  TransactionType _type = TransactionType.expense;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +55,13 @@ class _ExpensePageState extends State<ExpensePage> {
           ),
           const SizedBox(width: double.infinity, height: 20),
 
-          TransactionTypeSelector(),
+          TransactionTypeSelector(
+            onChanged: (newType) {
+              setState(() {
+                _type = newType;
+              });
+            },
+          ),
           const SizedBox(width: double.infinity, height: 20),
 
           ChooseCategoryClass(
@@ -87,70 +94,87 @@ class _ExpensePageState extends State<ExpensePage> {
 
           // test
           SaveOnButton(
-            onPressed: () async {
-              // KROK 1: Walidacja danych
-              if (enteredAmount == null || enteredAmount! <= 0) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Wprowadź poprawną kwotę')),
-                );
-                return;
-              }
-
-              if (selectedCategory == null) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Wybierz kategorię')),
-                );
-                return;
-              }
-
-              // KROK 2: Pobieranie serwisów
-              final transactionService = Provider.of<TransactionService>(
-                context,
-                listen: false,
-              );
-              final accountService = Provider.of<AccountService>(
-                context,
-                listen: false,
-              );
-              final accounts = accountService.accounts;
-
-              // Debug: pokaż listę kont
-              print('📋 accounts (lista): $accounts');
-              print('📋 Liczba kont: ${accounts.length}');
-
-              // KROK 3: Znajdź konto (domyślne lub pierwsze)
-              if (accounts.isEmpty) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Brak dostępnych kont')),
-                );
-                return;
-              }
-
-              // znajdź domyślne konto lub użyj pierwszego
-              final account = accounts.firstWhere(
-                (acc) => acc.isDefault,
-                orElse: () => accounts.first,
-              );
-
-              print('Chosen account: ${account.accountName}');
-
-              print('$selectedAlbumes');
-
-              // KROK 4: Przygotuj folderId (jeśli wybrano foldery)
-              List<int> folderIds = [];
-              if (selectedAlbumes != null && selectedAlbumes!.isNotEmpty) {
-                final folders =
-                    Provider.of<FolderService>(context, listen: false).folder;
-                for (final index in selectedAlbumes!) {
-                  if (index >= 0 && index < folders.length) {
-                    folderIds.add(folders[index].folderId);
-                  }
+              onPressed: () async {
+                // KROK 1: Walidacja danych
+                if (enteredAmount == null || enteredAmount! <= 0) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Wprowadź poprawną kwotę')),
+                  );
+                  return;
                 }
-                print('foldexIndex: $folderIds');
-              }
 
+                if (selectedCategory == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Wybierz kategorię')),
+                  );
+                  return;
+                }
 
-            },
+                // KROK 2: Pobieranie serwisów
+                final transactionService = Provider.of<TransactionService>(
+                  context,
+                  listen: false,
+                );
+                final accountService = Provider.of<AccountService>(
+                  context,
+                  listen: false,
+                );
+                final accounts = accountService.accounts;
+
+                // Debug: pokaż listę kont
+                print('📋 accounts (lista): $accounts');
+                print('📋 Liczba kont: ${accounts.length}');
+
+                // KROK 3: Znajdź konto (domyślne lub pierwsze)
+                if (accounts.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Brak dostępnych kont')),
+                  );
+                  return;
+                }
+
+                // znajdź domyślne konto lub użyj pierwszego
+                final account = accounts.firstWhere(
+                      (acc) => acc.isDefault,
+                  orElse: () => accounts.first,
+                );
+
+                print('Chosen account: ${account.accountName}');
+
+                print('$selectedAlbumes');
+
+                // KROK 4: Przygotuj folderId (jeśli wybrano foldery)
+                List<int> folderIds = [];
+                if (selectedAlbumes != null && selectedAlbumes!.isNotEmpty) {
+                  final folders =
+                      Provider
+                          .of<FolderService>(context, listen: false)
+                          .folder;
+                  for (final index in selectedAlbumes!) {
+                    if (index >= 0 && index < folders.length) {
+                      folderIds.add(folders[index].folderId);
+                    }
+                  }
+                  print('foldexIndex: $folderIds');
+                }
+
+                print('transaction type: $_type');
+
+                // KROK 5: Wyślij expense do backendu
+                try {
+                  final success = await transactionService.createTransaction(
+                      accountId: account.accountId,
+                      type: _type.apiValue,
+                      amount: enteredAmount!,
+                      title: selectedCategory!.categoryName,
+                      categoryId: selectedCategory!.userCategoryId,
+                      date: selectedDate,
+                      folderId: folderIds,
+                  );
+
+                  );
+                }
+              },
               buttonText: 'Save'
           ),
 

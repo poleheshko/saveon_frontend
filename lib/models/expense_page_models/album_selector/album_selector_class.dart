@@ -86,23 +86,20 @@ class _FolderSelectorClassState extends State<FolderSelectorClass> {
                       ),
                       title: Text(
                         folders.elementAt(index).folderName,
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .bodyMedium,
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       trailing:
-                      isSelected
-                          ? SvgPicture.asset(
-                        "lib/assets/album_icons/item_selected.svg",
-                        height: 20,
-                        width: 20,
-                      )
-                          : SvgPicture.asset(
-                        "lib/assets/album_icons/item_unselected.svg",
-                        height: 20,
-                        width: 20,
-                      ),
+                          isSelected
+                              ? SvgPicture.asset(
+                                "lib/assets/album_icons/item_selected.svg",
+                                height: 20,
+                                width: 20,
+                              )
+                              : SvgPicture.asset(
+                                "lib/assets/album_icons/item_unselected.svg",
+                                height: 20,
+                                width: 20,
+                              ),
                       onTap: () {
                         setState(() {
                           // Jeśli indeks jest już w zbiorze, usuń go (odznaczanie)
@@ -115,7 +112,9 @@ class _FolderSelectorClassState extends State<FolderSelectorClass> {
                           }
 
                           // wywołanie callbacku
-                          widget.onAlbumSelected?.call(Set<int>.from(_selectedIndices));
+                          widget.onAlbumSelected?.call(
+                            Set<int>.from(_selectedIndices),
+                          );
                         });
                       },
                     ),
@@ -131,7 +130,7 @@ class _FolderSelectorClassState extends State<FolderSelectorClass> {
             ),
           ],
         );
-      }
+      },
     );
   }
 }

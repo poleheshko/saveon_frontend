@@ -2,7 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TransactionTypeSelector extends StatefulWidget {
-  const TransactionTypeSelector({super.key});
+  const TransactionTypeSelector({
+    super.key,
+    this.initialValue = TransactionType.expense,
+    this.onChanged,
+  });
+
+  final TransactionType initialValue;
+  final ValueChanged<TransactionType>? onChanged;
 
   @override
   State<TransactionTypeSelector> createState() => _TransactionTypeSelector();
@@ -10,14 +17,33 @@ class TransactionTypeSelector extends StatefulWidget {
 
 enum TransactionType { expense, income }
 
+extension TransactionTypeExtension on TransactionType {
+  /// Wartość do wysłania do API (np. "EXPENSE", "INCOME").
+  String get apiValue => switch (this) {
+    TransactionType.expense => 'EXPENSE',
+    TransactionType.income => 'INCOME',
+  };
+}
+
 class _TransactionTypeSelector extends State<TransactionTypeSelector> {
-  TransactionType _selected = TransactionType.expense;
-  Color selectedBackgroundColor = Color(0xFF5D52FF);
-  Color selectedTextColor = Color(0xFFFFFFFF);
+  late TransactionType _selected;
+  static const Color selectedBackgroundColor = Color(0xFF5D52FF);
+  static const Color selectedTextColor = Color(0xFFFFFFFF);
 
   @override
   void initState() {
     super.initState();
+    _selected = widget.initialValue;
+  }
+
+  void setSelected(TransactionType type) {
+    if (_selected == type) return;
+
+    setState (() {
+      _selected = type;
+    });
+
+    widget.onChanged?.call(type);
   }
 
   @override
@@ -38,17 +64,13 @@ class _TransactionTypeSelector extends State<TransactionTypeSelector> {
             text: 'Expense',
             selected: _selected == TransactionType.expense,
             onPressed:
-                () => setState(() {
-                  _selected = TransactionType.expense;
-                }),
+                () => setSelected(TransactionType.expense)
           ),
           _buildButton(
             text: 'Income',
             selected: _selected == TransactionType.income,
             onPressed:
-                () => setState(() {
-                  _selected = TransactionType.income;
-                }),
+                () => setSelected(TransactionType.income)
           ),
         ],
       ),
